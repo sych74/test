@@ -20,12 +20,12 @@ CREATE TABLE `wp_usermeta` (
   PRIMARY KEY (`umeta_id`),
   KEY `user_id` (`user_id`),
   KEY `meta_key` (`meta_key`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `wp_usermeta` WRITE;
 /*!40000 ALTER TABLE `wp_usermeta` DISABLE KEYS */;
-INSERT INTO `wp_usermeta` VALUES (1,1,'nickname','admin'),(3,1,'first_name',''),(5,1,'last_name',''),(7,1,'description',''),(9,1,'rich_editing','true'),(11,1,'comment_shortcuts','false'),(13,1,'admin_color','fresh'),(15,1,'use_ssl','0'),(17,1,'show_admin_bar_front','true'),(19,1,'wp_capabilities','a:1:{s:13:\"administrator\";b:1;}'),(21,1,'wp_user_level','10'),(23,1,'dismissed_wp_pointers',''),(25,1,'show_welcome_panel','1'),(27,1,'session_tokens','a:1:{s:64:\"5f7089997116c32f86d83ee50c6cafffe60580b743fdcee1700e28e5e900ec7a\";a:4:{s:10:\"expiration\";i:1476369157;s:2:\"ip\";s:13:\"192.168.9.192\";s:2:\"ua\";s:82:\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:49.0) Gecko/20100101 Firefox/49.0\";s:5:\"login\";i:1476196357;}}'),(29,1,'wp_dashboard_quick_press_last_post_id','1011');
+INSERT INTO `wp_usermeta` VALUES (1,1,'nickname','admin'),(3,1,'first_name',''),(5,1,'last_name',''),(7,1,'description',''),(9,1,'rich_editing','true'),(11,1,'comment_shortcuts','false'),(13,1,'admin_color','fresh'),(15,1,'use_ssl','0'),(17,1,'show_admin_bar_front','true'),(19,1,'wp_capabilities','a:1:{s:13:\"administrator\";b:1;}'),(21,1,'wp_user_level','10'),(23,1,'dismissed_wp_pointers',''),(25,1,'show_welcome_panel','1'),(27,1,'session_tokens','a:1:{s:64:\"5f7089997116c32f86d83ee50c6cafffe60580b743fdcee1700e28e5e900ec7a\";a:4:{s:10:\"expiration\";i:1476369157;s:2:\"ip\";s:13:\"192.168.9.192\";s:2:\"ua\";s:82:\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:49.0) Gecko/20100101 Firefox/49.0\";s:5:\"login\";i:1476196357;}}'),(29,1,'wp_dashboard_quick_press_last_post_id','1011'),(31,1,'nav_menu_recently_edited','121'),(33,1,'managenav-menuscolumnshidden','a:5:{i:0;s:11:\"link-target\";i:1;s:11:\"css-classes\";i:2;s:3:\"xfn\";i:3;s:11:\"description\";i:4;s:15:\"title-attribute\";}'),(35,1,'metaboxhidden_nav-menus','a:2:{i:0;s:12:\"add-post_tag\";i:1;s:15:\"add-post_format\";}');
 /*!40000 ALTER TABLE `wp_usermeta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
