@@ -1,6 +1,5 @@
 <?php
 
-define('WP_DEBUG', 'true');
 // ** MySQL settings ** //
 /** The name of the database for WordPress */
 define('REVISR_WORK_TREE', '/var/www/webroot/ROOT/'); // Added by Revisr
