@@ -32,7 +32,7 @@ CREATE TABLE `wp_users` (
 
 LOCK TABLES `wp_users` WRITE;
 /*!40000 ALTER TABLE `wp_users` DISABLE KEYS */;
-INSERT INTO `wp_users` VALUES (1,'admin','$P$BOJu/TCC1BtA6so2J9cntUhywfQgKY0','admin','gs@jelastic.com','','2016-10-11 16:10:19','',0,'admin');
+INSERT INTO `wp_users` VALUES (1,'admin','$P$BTwCGi4CL1EmDMIGzhxdz/mUuRU4xp1','admin','gs@jelastic.com','','2016-10-11 14:28:47','',0,'admin');
 /*!40000 ALTER TABLE `wp_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
