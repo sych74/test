@@ -13,22 +13,20 @@
 						"nodeGroup": "bl",
 						"displayName": "Balancer"
 					}, {
-						"docker": {
-							"volumeMounts": {
-								"/var/www/webroot/ROOT": {
-									"readOnly": false,
-									"sourcePath": "/data",
-									"sourceNodeGroup": "storage"
-								}
-							},
-							"image": "jelastic/magento2-nginxphp:1.8.0-php5.6.20",
-							"links": ["db:DB", "redis:REDIS", "memcached:MEMCACHED"],
-							"volumes": ["/var/www/webroot/ROOT"]
-						},
+						"image": "jelastic/magento2-nginxphp:1.8.0-php5.6.20",
+						"links": ["db:DB", "memcached:MEMCACHED"],
+						"volumes": ["/var/www/webroot/ROOT"],
 						"cloudlets": 8,
 						"count": 2,
 						"nodeGroup": "cp",
-						"displayName": "AppServer"
+						"displayName": "AppServer",
+						"volumeMounts": {
+							"/var/www/webroot/ROOT": {
+								"readOnly": false,
+								"sourcePath": "/data",
+								"sourceNodeGroup": "storage"
+							}
+						}
 					}, {
 						"image": "devbeta/magento2-storage-sample"
 						"cloudlets": 8,
@@ -49,7 +47,7 @@
 					}
 				]
 			},
-			"onAfterScaleIn[nodeGroup:cp]": {
+			"onAfterScaleIn[nodeGroup:cp]": { 
 				"call": "ScaleNodes"
 			},
 			"onAfterScaleOut[nodeGroup:cp]": {
