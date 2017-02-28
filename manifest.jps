@@ -33,7 +33,7 @@
 						"displayName": "AppServer"
 					}, {
 						"docker": {
-							"image": "jelastic/magento2-storage-sample"
+							"image": "devbeta/magento2-storage-sample"
 						},
 						"cloudlets": 8,
 						"nodeGroup": "storage",
