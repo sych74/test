@@ -8,7 +8,7 @@
 			"topology": {
 				"nodes": [{
 						"docker": {
-							"image": "jelastic/magento2varnish:4.1.1"
+							"image": "devbeta/varnish:4.1.1-latest"
 						},
 						"cloudlets": 8,
 						"count": 2,
