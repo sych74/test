@@ -1,1 +1,49 @@
-asdasd
+{
+  "jpsType": "install",
+  "homepage": "https://github.com/jelastic-jps/magento/tree/master/magento19-php7-varnish-mysql-redis-storage",
+  "description": {
+    "nodes": [
+      {
+        "image": "devbeta/redis:3.2.9",
+        "cloudlets": 8,
+        "nodeGroup": "rdc",
+        "addons": [
+          "migration"
+        ],
+        "displayName": "Redis cache"
+      }
+    ],
+    "addons": [
+      {
+        "id": "migration",
+        "settings": {
+          "fields": [
+            {
+              "name": "siteBaseUrl",
+              "caption": "Site base url",
+              "type": "string",
+              "inputType": "string",
+              "placeholder": "http://test.com/",
+              "regex": "^(https?\\://)(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]\\/)*$",
+              "regexText": "Incorrect Link (example: http(s)://jelastic.com/)",
+              "required": true
+            }
+          ]
+        },
+        "buttons": [
+          {
+            "procedure": "runMigration",
+            "caption": "Migration",
+            "logsPath": "/var/log/migration.log",
+            "successText": "Migration is launched."
+          }
+        ]
+      }
+    ],
+    "onInstall": [
+      {
+        "log": "Downloading, Unpacking, Installation and Patching Magento"
+      }
+    ]
+  }
+}
