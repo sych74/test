@@ -1,0 +1,36 @@
+{
+    "jpsType": "update",
+    "application": {
+        "name": "Grunt Build Node",
+        "homepage": "https://github.com/jelastic-jps/payara/tree/master/addons/maven-build-node",
+        "description": "Adding grunt as a build node",
+        "onInstall": [{
+            "installAddon": {
+                "id": "build-addon",
+                "nodeGroup": "cp"
+            }
+        }],
+        "addons": [{
+            "id": "build-addon",
+            "buttons": {
+                "procedure": "build",
+                "caption": "Run build",
+                "logsPath": "/var/log/build.log",
+                "successText": "Build are launched."
+            }
+        }],
+        "procedures": [{
+            "id": "build",
+            "onCall": {
+                "execCmd": {
+                    "nodeGroup": "cp",
+                    "commands": [
+                        "cd /var/www/webroot/ROOT/wp-content/themes/salient && grunt default >> /var/log/build.log",
+                        "rm -rf /var/www/webroot/ROOT/wp-content/cache/supercache/*",
+                        "chown nginx:nginx -R /var/www/webroot/ROOT/"
+                    ]
+                }
+            }
+        }]
+    }
+}
