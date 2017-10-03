@@ -1,0 +1,26 @@
+{
+    "jpsType": "install",
+    "jpsVersion": "0.9",
+    "application": {
+        "id": "glassfish",
+        "categories": [
+            "apps"
+        ],
+        "name": "GlassFish 5",
+        "logo": "https://github.com/jelastic-jps/glassfish/raw/master/glassfish-cluster/img/glassfish-logo.png",
+        "description": "GlassFish 5",
+        "env": {
+            "topology": {
+                "nodes": {
+                    "cloudlets": 8,
+                    "nodeGroup": "cp",
+                    "image": "jelastic/glassfish:latest"
+                }
+            },
+            "success": {
+                "text": "text",
+                "email": "email"
+            }
+        }
+    }
+}
