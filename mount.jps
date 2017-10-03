@@ -1,0 +1,37 @@
+{
+    "jpsType": "install",
+    "name": "test",
+    "nodes": [{
+        "image": "jelastic/nginxphp:1.10.1-php-7.0.21",
+        "count": 3,
+        "cloudlets": 8,
+        "nodeGroup": "cp",
+        "volumes": ["/mnt", "/home", "/var/www/webroot/ROOT"],
+        "volumeMounts": {
+            "/mnt": {
+                "readOnly": false,
+                "sourceNodeGroup": "cp"
+            },
+            "/home": {
+                "readOnly": false,
+                "sourcePath": "/data",
+                "sourceNodeGroup": "storage1"
+            },
+            "/var/www/webroot/ROOT": {
+                "readOnly": false,
+                "sourcePath": "/data",
+                "sourceNodeGroup": "storage2"
+            }
+        }
+    }, {
+        "image": "jelastic/storaged",
+        "cloudlets": 8,
+        "nodeGroup": "storage1",
+        "displayName": "Storage"
+    }, {
+        "image": "jelastic/storaged",
+        "cloudlets": 8,
+        "nodeGroup": "storage2",
+        "displayName": "Storage"
+    }]
+}
