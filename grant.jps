@@ -25,7 +25,7 @@
                 "execCmd": {
                     "nodeGroup": "cp",
                     "commands": [
-                        "cd /var/www/webroot/ROOT/wp-content/themes/salient && grunt default >> /var/log/build.log",
+                        "cd /var/www/webroot/ROOT/wp-content/themes/salient && grunt default --force >> /var/log/build.log",
                         "rm -rf /var/www/webroot/ROOT/wp-content/cache/supercache/*",
                         "chown nginx:nginx -R /var/www/webroot/ROOT/"
                     ]
