@@ -4,7 +4,7 @@
     "description": "Mysql Galera Auto Clustering",
     "globals": {
         "PATH": "https://raw.githubusercontent.com/sych74/mysql-cluster-1/master",
-        "DB_USER": "test4",
+        "DB_USER": "test6",
         "DB_PASS": "abcABC123",
         "CLUSTER_NAME": "cluster-aaaa",
         "GALERA_CONF": "/etc/mysql/conf.d/galera.cnf",
@@ -56,7 +56,7 @@
                 "for (var i = 0, n = resp.nodes; i < n.length; i++)",
                 "  n[i].nodeGroup == nodeGroup ? nodes.push(n[i].address) : 0",
                 "resp = {result:0, onAfterReturn: {}};",
-                "resp.onAfterReturn['cmd['+ nodeGroup +']'] = 'sed -i \"s/wsrep_cluster_address.*/wsrep_cluster_addresss = gcomm://'+ nodes.join(',') +'/\" ${globals.GALERA_CONF}';",
+                "resp.onAfterReturn['cmd['+ nodeGroup +']'] = 'sed -i \"s|wsrep_cluster_address.*|wsrep_cluster_addresss = gcomm://'+ nodes.join(',') +'|g \" ${globals.GALERA_CONF}';",
                 "resp.onAfterReturn['user'] = 'root';",
                 "return resp;"
             ]
