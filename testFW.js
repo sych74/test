@@ -1,6 +1,5 @@
 var envName = "${env.name}",
     bFireWallEnabled,
-    nodeGroup = 'sqldb',
     outputRule,
     inputRule,
     rules,
