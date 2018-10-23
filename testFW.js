@@ -29,9 +29,9 @@ if (jelastic.environment.security) {
   if (!resp || resp.result !== 0) return resp;
   bFireWallEnabled = resp.array[0] ? resp.array[0].value : 0;
   if (bFireWallEnabled) {
-    resp = jelastic.environment.security.AddRule(envName, session, inputRule);
+    resp = jelastic.environment.security.AddRule(envName, session, inputRule, '');
     if (!resp || resp.result !== 0) return resp;
-    return jelastic.environment.security.AddRule(envName, session, outputRule;
+    return jelastic.environment.security.AddRule(envName, session, outputRule, '';
   }
 }
 
