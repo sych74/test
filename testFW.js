@@ -1,5 +1,6 @@
 var envName = "${env.name}",
     bFireWallEnabled,
+    nodeGroup = 'sqldb',
     outputRule,
     inputRule,
     rules,
@@ -31,7 +32,7 @@ if (jelastic.environment.security) {
   if (bFireWallEnabled) {
     resp = jelastic.environment.security.AddRule(envName, session, inputRule, nodeGroup);
     if (!resp || resp.result !== 0) return resp;
-    return jelastic.environment.security.AddRule(envName, session, outputRule, nodeGroup;
+    return jelastic.environment.security.AddRule(envName, session, outputRule, nodeGroup);
   }
 }
 
