@@ -9,6 +9,7 @@ globals:
 onInstall:
 - log: Plugins installation and activation
 - cmd[${nodes.cp.master.id}]: |-
+    curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x /usr/local/bin/wp
     wget https://glcdn.githack.com/templates.1/wordpress-jelastic-cluster/raw/master/configs/wordpress/plugins -O ~/plugins
     while read plugin; do wp --allow-root plugin install $plugin --activate --path=${globals.SERVER_WEBROOT}; done < ~/plugins
     chmod -R 777 ${globals.SERVER_WEBROOT}/wp-content/w3tc-config
