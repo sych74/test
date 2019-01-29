@@ -145,13 +145,11 @@ onInstall:
   - setupRedis
   - setupWPAdditional
   
-  
   - if (${settings.wpmu-addon:false}):         
-    - api: jelastic.env.control.GetEnvInfo
-      envName: ${this.envName}
-    - install: 
+    - installJps: 
         jps: https://raw.githubusercontent.com/sych74/wordpress-cluster/master/addon/multisites.jps
-        envName: ${this.envName}  
+        settings:
+          mode: subdir
 
 actions:
   setupNode:
