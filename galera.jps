@@ -11,7 +11,7 @@ nodes:
     nodeGroup: sqldb
     displayName: Database
     env:
-      JELASTIC_PORTS: "4567, 4568, 4444"
+      JELASTIC_PORTS: "4567,4568,4444"
       ON_ENV_INSTALL: ''
 
 globals:
