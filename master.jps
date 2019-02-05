@@ -3,7 +3,12 @@ version: '1.1'
 name: WordPress Cluster
 logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/images/wp-cluster.png
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
-    
+
+globals:
+    DB_USER: ${settings.DB_USER:[jelastic-${fn.random}]}
+    DB_PASS: ${settings.DB_PASS:[${fn.password(20)}]}
+    ADMIN_PASSWD: ${settings.ADMIN_PASSWD:[${fn.password(10)}]}
+
 nodes:
   - nodeType: mariadb-dockerized
     tag: 10.3.11
@@ -14,4 +19,4 @@ nodes:
     env:
       ON_ENV_INSTALL: ''
 onInstall:
-  log: --install
+  log: ${globals.DB_USER} -- ${globals.DB_USER} -- ${globals.ADMIN_PASSWD}
