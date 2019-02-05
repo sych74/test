@@ -5,9 +5,9 @@ logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/im
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
 
 globals:
-    DB_USER: ${settings.DB_USER:[jelastic-${fn.random}]}
-    DB_PASS: ${settings.DB_PASS:[${fn.password(20)}]}
-    ADMIN_PASSWD: ${settings.ADMIN_PASSWD:[${fn.password(10)}]}
+    DB_USER: ${settings.DB_USER:jelastic-[fn.random]}
+    DB_PASS: ${settings.DB_PASS:[fn.password(20)]}
+    ADMIN_PASSWD: ${settings.ADMIN_PASSWD:[fn.password(10)]}
 
 nodes:
   - nodeType: mariadb-dockerized
