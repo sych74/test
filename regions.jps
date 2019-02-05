@@ -1,0 +1,71 @@
+version: 1.1
+type: install
+id: wp-cluster-startup
+name: WordPress Cluster
+description:
+  short: WordPress DevOps Pack
+settings:
+  fields:
+    - caption: Env Name  
+      type: envname
+      name: envName
+      dependsOn: region
+      randomName: true
+      showFullDomain: true
+      required: true
+      
+    - caption: Region
+      type: regionlist
+      name: regions
+      disableInactive: true
+      selectFirstAvailable: true
+      multiSelect: true
+      min: 1
+      max: 2      
+      filter:
+        isActive: true
+      default: premium-vz7
+
+
+onInstall:
+  - script: |
+      return { 
+        result: 0, 
+        regions: '${settings.regions}'.split(',')
+      }
+
+  - forEach(response.regions):
+      run: 
+        envName: ${settings.envName}
+        region: ${@i}
+        index: ${@}
+ 
+actions: 
+  run:
+    - if (!${this.index}):
+        setup-cluster: 
+          envName: ${this.envName}
+          region: ${this.region}
+    - if (${this.index}):
+        setup-cluster: 
+          envName: ${this.envName}-${this.index}
+          region: ${this.region}
+          masterEnv: ${this.envName}
+  
+  setup-cluster:
+    - script: return {result:0, envGroups:eval('(' + MANIFEST + ')').envGroups}
+    - install: 
+        jps: https://raw.githubusercontent.com/sych74/test/master/master.jps
+        envName: ${this.envName}
+        envGroups: ${response.envGroups}
+        region: ${this.region}
+
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${this.envName}
+    - forEach(response.nodes): 
+        if (${@i.ismaster} && '${@i.nodeGroup}' == 'sqldb'):
+          setGlobals: 
+            master1: node${@i.id}-${this.masterEnv:}
+            master2: node${@i.id}-${this.envName}
+
+
