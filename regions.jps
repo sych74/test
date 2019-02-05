@@ -26,7 +26,6 @@ settings:
         isActive: true
       default: premium-vz7
 
-
 onInstall:
   - script: |
       return { 
@@ -39,18 +38,19 @@ onInstall:
         envName: ${settings.envName}
         region: ${@i}
         index: ${@}
- 
+                 
 actions: 
   run:
     - if (!${this.index}):
         setup-cluster: 
           envName: ${this.envName}
           region: ${this.region}
+          index: ${this.index}
     - if (${this.index}):
         setup-cluster: 
           envName: ${this.envName}-${this.index}
           region: ${this.region}
-          masterEnv: ${this.envName}
+          index: ${this.index}
   
   setup-cluster:
     - script: return {result:0, envGroups:eval('(' + MANIFEST + ')').envGroups}
@@ -65,7 +65,4 @@ actions:
     - forEach(response.nodes): 
         if (${@i.ismaster} && '${@i.nodeGroup}' == 'sqldb'):
           setGlobals: 
-            master1: node${@i.id}-${this.masterEnv:}
-            master2: node${@i.id}-${this.envName}
-
-
+            master${this.index}: node${@i.id}-${this.envName}
