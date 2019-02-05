@@ -1,0 +1,17 @@
+type: install
+version: '1.1'
+name: WordPress Cluster
+logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/images/wp-cluster.png
+baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
+    
+nodes:
+  - nodeType: mariadb-dockerized
+    tag: 10.3.11
+    count: 1
+    cloudlets: 8
+    nodeGroup: sqldb
+    displayName: Database
+    env:
+      ON_ENV_INSTALL: ''
+onInstall:
+  log: --install
