@@ -5,8 +5,8 @@ logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/im
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
 
 globals:
-    DB_USER: ${application.settings.DB_USER:jelastic-[fn.random]}
-    DB_PASS: ${application.settings.DB_PASS:[fn.password(10)]}
+    DB_USER: test
+    DB_PASS: abcABC123
     ADMIN_PASSWD: ${settings.ADMIN_PASSWD:[fn.password(10)]}
 
 nodes:
