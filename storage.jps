@@ -1,0 +1,18 @@
+type: install
+version: '1.1'
+name: Storage Cluster
+logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/images/wp-cluster.png
+baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
+
+globals:
+    DB_USER: test
+    DB_PASS: abcABC123
+    ADMIN_PASSWD: ${settings.ADMIN_PASSWD:[fn.password(10)]}
+
+nodes:
+  - nodeType: storage
+    count: 1
+    cloudlets: 8
+    nodeGroup: storage
+onInstall:
+  -log: test
