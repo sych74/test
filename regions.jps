@@ -50,7 +50,6 @@ onInstall:
 
   - setup-synchronization:
       envName: ${settings.envName}
-      
                              
 actions: 
   run:
@@ -68,7 +67,7 @@ actions:
   setup-cluster:
     - script: return {result:0, envGroups:eval('(' + MANIFEST + ')').envGroups}
     - install: 
-        jps: https://raw.githubusercontent.com/sych74/test/master/master.jps
+        jps: ${globals.WP_JPS_URL}/regions.jps
         envName: ${this.envName}
         envGroups: ${response.envGroups}
         region: ${this.region}
