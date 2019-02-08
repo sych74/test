@@ -1,0 +1,4 @@
+- cmd [sqldb]:
+    mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "set global log_bin_trust_function_creators=1;"
+ 
+ 
