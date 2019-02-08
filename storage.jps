@@ -15,4 +15,4 @@ nodes:
     cloudlets: 8
     nodeGroup: storage
 onInstall:
-  -log: test
+  - log: test
