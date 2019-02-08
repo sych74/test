@@ -98,7 +98,7 @@ actions:
 
         - if ('${@i.nodeGroup}' == 'storage'):
             setGlobals: 
-              storageIP${this.index}: ${@i.address}
+              storage-IP${this.index}: ${@i.address}
               
         - if (${@i.ismaster} && '${@i.nodeGroup}' == 'cp'):
            setGlobals: 
@@ -128,8 +128,9 @@ actions:
         nodeGroup: storage
         settings:
           optional: two_envs
-          address: ${globals.storageIP1}
+          address: ${globals.storage-IP1}
           password: abcABC123
+          delay: 10
 
     - install: 
         jps: https://raw.githubusercontent.com/dzotic9/file-sync/master/manifest.jps
@@ -137,8 +138,9 @@ actions:
         nodeGroup: storage
         settings:
           optional: two_envs
-          address: ${globals.storageIP0}
+          address: ${globals.storage-IP0}
           password: abcABC123
+          delay: 10
 
   install-wordpress:
     - install: 
