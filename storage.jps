@@ -14,5 +14,13 @@ nodes:
     count: 1
     cloudlets: 8
     nodeGroup: storage
+  - nodeType: mariadb-dockerized
+    tag: 10.3.11
+    count: 1
+    cloudlets: 8
+    nodeGroup: sqldb
+    displayName: Database
+
+    
 onInstall:
   - log: test
