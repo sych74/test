@@ -29,4 +29,4 @@ settings:
 onInstall:
   - cmd[bl]:
       - wget https://raw.githubusercontent.com/sych74/test/master/CF-domain.sh -O ~/CF-domain.sh
-      - bash ~/CF-domain.sh ${settings.cf_email} ${settings.cf_key} ${settings.cf_zone_id} ${settings.custom_domain} ${nodes.bl[0].address}
+      - bash ~/CF-domain.sh ${settings.cf_email} ${settings.cf_key} ${settings.cf_zone_id} ${settings.custom_domain} ${nodes.bl[0].extIPs}
