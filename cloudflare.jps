@@ -1,14 +1,32 @@
-EMAIL="steve@example.com";
-KEY="08n46q4ofo0v5pc3u3g3eu517o69axu8s6ml4"; \
-ZONE_ID="8b717207bcee4047af2e9dff95832996"; \
-TYPE="A"; \
-NAME="example.com"; \
-CONTENT="203.0.113.50"; \
-PROXIED="true"; \
-TTL="1"; \
-curl -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/" \
-    -H "X-Auth-Email: $EMAIL" \
-    -H "X-Auth-Key: $KEY" \
-    -H "Content-Type: application/json" \
-    --data '{"type":"'"$TYPE"'","name":"'"$NAME"'","content":"'"$CONTENT"'","proxied":'"$PROXIED"',"ttl":'"$TTL"'}'
-    | python -m json.tool;
+jpsType: update
+jpsVersion: '1.1'
+name: Addon for CloudFlare DNS
+description: Addon for CloudFlare DNS
+logo: https://raw.githubusercontent.com/jelastic-jps/wordpress-cluster/master/images/wp-cluster.png
+settings:
+    fields:
+    - name: custom_domain
+      caption: Custom Domain
+      type: string
+      default: .unigeocloud.com
+      required: true
+    - name: cf_email
+      caption: CF Email
+      type: string
+      default: "sych74@gmail.com"
+      required: true
+    - name: cf_key
+      caption: CF KEY
+      type: string
+      default: 34a8fac9c746885ee63c167099802fdef2c14
+      required: true
+    - name: cf_zone_id
+      caption: CF ZONE ID
+      type: string
+      default: dac14bb28d668333cb4e511fc65e603a
+      required: true
+
+onInstall:
+  - cmd[bl]:
+      - wget https://raw.githubusercontent.com/sych74/test/master/CF-domain.sh -O ~/CF-domain.sh
+      - bash ~/CF-domain.sh ${settings.cf_email} ${settings.cf_key} ${settings.cf_zone_id} ${settings.custom_domain} ${nodes.bl[0].address}
