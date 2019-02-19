@@ -4,7 +4,7 @@ name: WordPress Cluster
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
 
 globals:
-    DB_USERRR: ${settings.db_user}
+    DB_USER1: ${settings.db_user1:[fn.password(10)]}
   
 onInstall:
-  - log: --- ${globals.DB_USERRR}
+  - log: --- ${globals.DB_USER1}
