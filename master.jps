@@ -3,8 +3,8 @@ version: '1.1'
 name: WordPress Cluster
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
 
-globals:
-    DB_TEST: ${settings.db_test:[fn.password(10)]}
   
 onInstall:
-  - log: --- ${settings.db_test:[fn.password(10)]}
+  - setGlobals:
+      DB_TEST: ${settings.db_test:[fn.password(10)]}
+  - log: --- ${globals.DB_TEST}
