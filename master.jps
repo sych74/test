@@ -4,7 +4,7 @@ name: WordPress Cluster
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
 
 globals:
-    DB_TEST: ${application.settings.db_test:[fn.password(10)]}
+    DB_TEST: ${settings.db_test:[fn.password(10)]}
   
 onInstall:
-  - log: --- ${globals.DB_TEST}
+  - log: --- ${settings.db_test:[fn.password(10)]}
