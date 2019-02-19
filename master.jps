@@ -1,4 +1,4 @@
-type: install
+type: update
 version: '1.1'
 name: WordPress Cluster
 baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
