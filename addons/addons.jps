@@ -1,1 +1,86 @@
-test
+type: install
+version: 1.4
+name: test
+settings:
+  fields:
+    - type: checkbox
+      name: le-addon
+      caption: Install Let's Encrypt Certificates and Custom Domains Addon. Public IP is required.
+      value: false
+
+onBeforeInit: |  
+  var resp = jelastic.billing.account.GetQuotas(appid, session, 'environment.externalip.enabled');
+  if (resp.result != 0) return resp;  
+  var r = {result:0}
+  if (!resp.array[0].value) r.settings = {}; 
+  return r;
+
+globals:
+  DEPLOY_HOOK: /root/deployLE.sh
+  UNDEPLOY_HOOK: /root/undeployLE.sh 
+  DEPLOY_HOOK_JS: https://raw.githubusercontent.com/jelastic-jps/gitlab/master/scripts/deployHook.js?_r=${fn.random}    
+
+nodes:
+- count: 1
+  cloudlets: 32
+  nodeType: nginxphp-dockerized  
+  nodeGroup: cp
+  displayName: GitLab Server
+  extip: ${settings.le-addon:false}
+
+ssl: true      
+skipNodeEmails: true
+        
+onInstall:
+  - installAddon:
+      id: update-addon
+      nodeGroup: cp    
+
+  - installAddon:
+      id: letsencrypt-ssl-addon
+      nodeGroup: cp
+      
+  - if (${settings.le-addon:false}): 
+      install-LE:
+        skipEnvs: true
+
+actions:
+
+  install-LE:
+     - install:
+        jps: https://raw.githubusercontent.com/jelastic-jps/lets-encrypt/master/manifest.jps?_r=${fn.random}
+        nodeGroup: cp
+        settings:
+          deployHook: ${globals.DEPLOY_HOOK_JS}
+          deployHookType: js
+          undeployHook: ${globals.DEPLOY_HOOK_JS}
+          undeployHookType: js
+          _customDomains: ${env.domain}
+
+addons:
+  - id: update-addon
+    name: Update GitLab Server
+    description: Press "Update" button to initiate update procedure 
+    buttons:
+      - caption: Update
+        action: update
+        loadingText: Updating...
+        confirmText: Do you want to update GitLab Server?
+        successText: GitLab Server has been successfully updated!
+    actions:
+      update:
+        - cmd[cp]: echo "assdasdasdasd"
+            
+  - id: letsencrypt-ssl-addon
+    name: Let's Encrypt + Custom Domains
+    description: Press "Install" button to initiate installation procedure 
+    globals: 
+      HTTPS_PORT: 443
+    buttons:
+      - caption: Install 
+        action: install-LE
+        loadingText: Installing...
+        confirmText: Do you want to install Let's Encrypt addon?
+        successText: Let's Encrypt addon has been successfully installed!
+
+success: /text/success.md
