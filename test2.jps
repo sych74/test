@@ -1,0 +1,10 @@
+type: update
+version: '0.99'
+name: Test 2
+
+nodeGroupAlias:
+  "${targetNodes.nodeGroup}": cp
+
+onAfterScaleOut[cp]:
+  forEach(event.response.nodes):
+    log: test2 - ${@i.id}
