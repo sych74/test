@@ -1,23 +1,17 @@
-  - set:
-      multiRegions: false
+type: install
+version: '1.1'
+name: Test
 
-  - script: |
-      return { 
-        result: 0, 
-        count_regions: '${settings.regions}'.split(',').length
-      }
-  - if ( '${response.count_regions}' == 2 ):
-      set:
-        multiRegions: true
+nodes:
+  - nodeType: nginxphp-dockerized
+    cloudlets: 8
+    nodeGroup: cp
 
-  - script: |
-      return { 
-        result: 0, 
-        regions: '${settings.regions}'.split(',')
-      }
+onInstall:
+  - installJps:
+      jps: https://raw.githubusercontent.com/sych74/test/master/test1.jps
+      nodeGroup: cp
 
-  - forEach(response.regions):
-      log: --- ${@i}  -   ${@}
-      
-  - if ( ${this.multiRegions} ):
-      log: ---zxczxczxczxczxc-
+  - installJps:
+      jps: https://raw.githubusercontent.com/sych74/test/master/test2.jps
+      nodeGroup: cp
