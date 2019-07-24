@@ -11,6 +11,8 @@ var scaleUpLimit = resp.array[0] && resp.array[0].value ? resp.array[0].value : 
 
 if (scaleUpLimit <= scaleDownLimit) return {result:0, warning: 'autoscaling triggers have not been added due to upLimit ['+scaleUpLimit+'] <= downLimit ['+scaleDownLimit+']'}
 
+return loadGrowth;
+
 if (loadGrowth.toLowerCase() == "slow") {
     var scaleUpValue = 70,
         scaleDownValue = 20,
