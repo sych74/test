@@ -1,5 +1,5 @@
 //@auth
-//@req(nodeGroup, resourceType, cleanOldTriggers, scaleUpValue, scaleUpLimit, scaleUpLoadPeriod, scaleDownValue, scaleDownLimit, scaleDownLoadPeriod)
+//@req(nodeGroup, resourceType, cleanOldTriggers, scaleUpValue, scaleUpLimit, scaleUpLoadPeriod, scaleDownValue, scaleDownLimit, scaleNodeCount, scaleDownLoadPeriod)
 
 if (cleanOldTriggers) {
     var actions = ['ADD_NODE', 'REMOVE_NODE'];
@@ -26,7 +26,7 @@ resp = jelastic.env.trigger.AddTrigger('${env.envName}', session,
                 "type": "ADD_NODE",
                 "customData": {
                     "limit": scaleUpLimit,
-                    "count": 1,
+                    "count": scaleNodeCount,
                     "notify": true
                 }
             }
