@@ -27,7 +27,6 @@ if (loadGrowth.toLowerCase() == "fast") {
     var scaleUpValue = 30,
         scaleDownValue = 10,
         scaleNodeCount = 2;
-    return loadGrowth.toLowerCase();
 }
 
 if (cleanOldTriggers) {
