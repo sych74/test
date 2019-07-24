@@ -1,5 +1,5 @@
 //@auth
-//@req(nodeGroup, resourceType, cleanOldTriggers, scaleUpValue, scaleUpLimit, scaleUpLoadPeriod, scaleDownValue, scaleDownLimit, scaleNodeCount, scaleDownLoadPeriod)
+//@req(nodeGroup, resourceType, cleanOldTriggers, loadGrowth)
 
 var scaleUpLoadPeriod = 1,
     scaleDownLimit = 2,
