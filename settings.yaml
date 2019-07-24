@@ -1,0 +1,94 @@
+fields:
+- caption: Regions
+  type: regionlist
+  name: regions
+  disableInactive: true
+  selectFirstAvailable: true
+  multiSelect: true
+  min: 1
+  max: 2
+  filter:
+    isActive: true
+
+- type: list
+  caption: Topology
+  name: topology
+  value: standalone
+  values:
+    - value: standalone
+      caption: Standalone
+      tooltip: <h3 style='margin:5px; text-align:center'>Optimized Elastic Container</h3><div style='text-align:center'>For dev, test and small production sites</div><img width='300' height='200' style='margin:15px 0; margin-left:-10px' src='https://raw.githubusercontent.com/sych74/wordpress-master/master/images/standalone.svg?sanitize=true'>
+    - value: cluster
+      caption: HA Cluster
+      tooltip: <h3 style='margin:5px; text-align:center'>High Availability and Performance</h3><div style='text-align:center'>For medium and large size production sites</div><img width='270' height='360' style='margin:0 0;' src='https://raw.githubusercontent.com/sych74/wordpress-master/master/images/cluster.svg?sanitize=true'>
+  tipParams:
+    dismissDelay: 600000
+    anchor: l
+    hideOnOver: false
+    showDelay: 0
+
+- caption: Environment
+  type: envname
+  name: envName
+  dependsOn: region
+  randomName: true
+  showFullDomain: false
+  required: true
+
+- caption: Load Growth
+  type: list
+  name: load
+  default: medium
+  required: true
+  values:        
+    - value: slow
+      caption: Slow
+    - value: medium
+      caption: Medium
+    - value: fast
+      caption: Fast
+     
+- caption: None
+  type: list
+  name: greater
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 70
+      medium:    
+        - value: 50
+      fast:    
+        - value: 30
+- caption: None
+  type: list
+  name: less
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 20
+      medium:    
+        - value: 20
+      fast:    
+        - value: 10
+- caption: None
+  type: list
+  name: nodeCount
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 1
+      medium:    
+        - value: 1
+      fast:    
+        - value: 2
+        
+- caption: Additions
+  type: displayfield
+  name: displayfield
+  markup:
