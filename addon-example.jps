@@ -1,0 +1,66 @@
+jpsType: update
+logo: Logo
+name: Addons
+description: Addons
+
+onInstall:
+  - installAddon:
+      id: scripts-addon
+      nodeGroup: cp
+  - installAddon:
+      id: styles-addon
+      nodeGroup: cp
+  - installAddon:
+      id: grunt-addon
+      nodeGroup: cp
+  - installAddon:
+      id: reset-addon
+      nodeGroup: cp
+  
+
+addons:
+  - id: scripts-addon
+    buttons:
+      procedure: scripts-build
+      caption: Run build scripts
+      logsPath: "/var/log/build-scripts.log"
+      successText: Build scripts are launched.
+
+  - id: styles-addon
+    buttons:
+      procedure: styles-build
+      caption: Run build styles
+      logsPath: "/var/log/build-styles.log"
+      successText: Build styles are launched.
+
+  - id: grunt-addon
+    buttons:
+      procedure: grunt-build
+      caption: Run grunt build
+      logsPath: "/var/log/grunt.log"
+      successText: Grunt build is launched.
+      
+  - id: reset-addon
+    buttons:
+      procedure: reset-content
+      caption: Reset site content
+      logsPath: "/var/log/site-reset.log"
+      successText: Reset of Site content is completed.
+  
+
+actions:
+  scripts-build:
+    - cmd[cp]: |-
+        ....
+      
+  styles-build:
+    - cmd[cp]: |-
+        ....
+
+  grunt-build:
+    - cmd[cp]: |-
+        ....
+
+  reset-content:
+    - cmd[cp]: |-
+        ....    
