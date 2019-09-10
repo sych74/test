@@ -24,7 +24,7 @@ globals:
   
 onInstall:
   - log: DB Galera  Setup
-  - install: https://raw.githubusercontent.com/sych74/mysql-cluster/master/scripts/galera-configuration.jps
+  - install: https://raw.githubusercontent.com/sych74/mysql-cluster/master/scripts/galera.jps
     settings:
       db_user: "${globals.DB_USER}"
       db_pass: "${globals.DB_PASS}"
