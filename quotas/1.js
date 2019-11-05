@@ -18,7 +18,7 @@ settings.fields.push({
         "width": 4
     }, {
         "type": "displayfield",
-        "cls": "x-grid3-row-checker x-item-disabled",
+        "cls": "x-form-cb-label x-unselectable",
         "width": 30,
         "height": 20
     }, {
