@@ -17,16 +17,6 @@ fields:
           helm install --name default --set autoscaling.enabled=true --set autoscaling.minReplicas=2 --set resources.constraints.enabled=true --set resources.requests.cpu=400m --set resources.limits.cpu=700m ibm-charts/ibm-open-liberty --version 1.6.0  --debug
           kubectl apply -f https://raw.githubusercontent.com/jelastic-jps/kubernetes/v1.15.5/addons/ingress/openliberty.yaml
 
-  - name: label
-    caption: Topology
-    type: displayfield
-  - name: topo
-    type: radio-fieldset
-    values:
-      0-dev: '<b>Development:</b> one master (1) and one scalable worker (1+)'
-      1-prod: '<b>Production:</b> multi master (3) with API balancers (2+) and scalable workers (2+)'
-    default: 0-dev
-
   - name: ingress-controller
     type: list
     caption: Ingress Controller
