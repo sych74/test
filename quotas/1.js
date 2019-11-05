@@ -25,9 +25,8 @@ settings.fields.push({
         "type": "displayfield",
         "cls": "x-item-disabled",
         "value": Text
-        }]
-    });
-}
+    }]
+});
 
 return {
     result: 0,
