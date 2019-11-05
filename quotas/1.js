@@ -5,6 +5,7 @@ import com.hivext.api.core.utils.Transport;
 var url = "https://raw.githubusercontent.com/sych74/test/master/quotas/settings.yaml";
 var settings = toNative(new Yaml().load(new Transport().get(url)));
 var fields = settings.fields;
+var Text = "Install Lightning-Fast Premium CDN with 130+ PoPs";
     
 settings.fields.push({
     "type": "compositefield",
@@ -23,7 +24,7 @@ settings.fields.push({
     }, {
         "type": "displayfield",
         "cls": "x-item-disabled",
-        "value": "asdasdasdasd"
+        "value": Text
         }]
     });
 }
