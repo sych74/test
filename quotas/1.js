@@ -26,7 +26,7 @@ fields.push({
 settings.fields.push({
     type: "checkbox",
     name: "mu-addon",
-    caption: muText,
+    caption: "zxczxczxczxczxc",
     value: false
 });
 
