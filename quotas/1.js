@@ -58,8 +58,8 @@ if (markup) {
     });
 
     if (!prod && !dev){
-      f[1].values[1].disabled = true;
-      f[1].values[2].disabled = true;
+      f[2].values[1].disabled = true;
+      f[2].values[2].disabled = true;
       
     f.push({
         "type": "compositefield",
