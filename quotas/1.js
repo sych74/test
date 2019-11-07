@@ -17,13 +17,13 @@ fields.push({
     "type": "radio-fieldset",
     "name": "test",
     "default": "0-dev",
-    "values": [{
+    "values": {
         "0-dev": "test1",
         "1-prod": "test2"
-    }]   
+    }   
 });
 
-settings.fields.push({
+fields.push({
     type: "checkbox",
     name: "mu-addon",
     caption: "zxczxczxczxczxc",
