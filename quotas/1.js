@@ -58,24 +58,24 @@ if (markup) {
     });
 
     if (!prod && !dev){
-      f[2].values[1].disabled = true;
-      f[2].values[2].disabled = true;
+        f[2].values[1].disabled = true;
+        f[2].values[2].disabled = true;
       
-    f.push({
-        "type": "compositefield",
-        "height" : 0,
-        "hideLabel": true,
-        "width": 0,
-        "items": [{
+        f.push({
+            "type": "compositefield",
             "height" : 0,
-            "type": "string",
-            "required": true,
-        }]
-    });
-  } else {
-    if (!prod) delete f[2].values["1-prod"];
-    if (!storage) f.splice(3, 1);
-  }
+            "hideLabel": true,
+            "width": 0,
+            "items": [{
+                "height" : 0,
+                "type": "string",
+                "required": true,
+            }]
+        });
+    } else {
+        if (!prod) delete f[2].values["1-prod"];
+        if (!storage) f.splice(3, 1);
+    }
 }
 return resp;
 
