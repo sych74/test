@@ -17,6 +17,7 @@ fields.push({
     "type": "radio-fieldset",
     "name": "test",
     "default": "0-dev",
+    "disabled": true,
     "values": {
         "0-dev": "test1",
         "1-prod": "test2"
