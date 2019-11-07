@@ -27,8 +27,10 @@ fields:
     values:
         - value: 0-dev
           caption: '<b>Development:</b> one master (1) and one scalable worker (1+)'
+          disabled: false
         - value: 1-prod
           caption: '<b>Production:</b> multi master (3) with API balancers (2+) and scalable workers (2+)'
+          disabled: false
     default: 0-dev
 
   - name: ingress-controller
