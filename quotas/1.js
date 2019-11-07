@@ -7,26 +7,21 @@ var settings = toNative(new Yaml().load(new Transport().get(url)));
 var fields = settings.fields;
 var Text = "Install Lightning-Fast Premium CDN with 130+ PoPs";
     
-settings.fields.push({
-    "type": "compositefield",
-    "hideLabel": true,
-    "pack": "left",
-    "itemCls": "deploy-manager-grid",
-    "cls": "x-grid3-row-unselected",
-    "items": [{
-        "type": "spacer",
-        "width": 4
-    }, {
-        "type": "displayfield",
-        "cls": "x-form-cb-label x-unselectable",
-        "width": 30,
-        "height": 20
-    }, {
-        "type": "displayfield",
-        "cls": "x-item-disabled",
-        "value": Text
-    }]
+fields.push({
+    "name": "label1",
+    "caption": "Topology",
+    "type": "displayfield"
 });
+        
+fields.push({
+    "type": "radio-fieldset",
+    "name": "test",
+    "default": "0-dev",
+    "values": [{
+        "0-dev": "<b>Development:</b> one master (1) and one scalable worker (1+)",
+        "1-prod": "<b>Production:</b> multi master (3) with API balancers (2+) and scalable workers (2+)"
+    }]   
+});        
 
 return {
     result: 0,
