@@ -24,10 +24,11 @@ fields.push({
 });
 
 fields.push({
-    type: "checkbox",
-    name: "mu-addon",
-    caption: "zxczxczxczxczxc",
-    value: false
+    "type": "checkbox",
+    "name": "mu-addon",
+    "caption": "zxczxczxczxczxc",
+    "disabled": true,
+    "value": false
 });
 
 return {
