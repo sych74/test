@@ -21,7 +21,14 @@ fields.push({
         "0-dev": "test1",
         "1-prod": "test2"
     }]   
-});        
+});
+
+settings.fields.push({
+    type: "checkbox",
+    name: "mu-addon",
+    caption: muText,
+    value: false
+});
 
 return {
     result: 0,
