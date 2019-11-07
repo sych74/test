@@ -18,8 +18,8 @@ fields.push({
     "name": "test",
     "default": "0-dev",
     "values": [{
-        "0-dev": "<b>Development:</b> one master (1) and one scalable worker (1+)",
-        "1-prod": "<b>Production:</b> multi master (3) with API balancers (2+) and scalable workers (2+)"
+        "0-dev": "test1",
+        "1-prod": "test2"
     }]   
 });        
 
