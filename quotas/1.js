@@ -48,15 +48,19 @@ var resp = {result:0};
 var url = "https://raw.githubusercontent.com/sych74/test/master/quotas/settings.yaml";
 resp.settings = toNative(new org.yaml.snakeyaml.Yaml().load(new com.hivext.api.core.utils.Transport().get(url)));
 if (markup) {
-  var f = resp.settings.fields;
-  f.push({
-      "type": "displayfield",
-      "cls": "warning",
-      "height": 30,
-      "hideLabel": true,
-      "markup": (!prod && dev  ? "Production topology is not available. " : "") + markup + "Please upgrade your account."
-  });
-  if (!prod && !dev){
+    var f = resp.settings.fields;
+    f.push({
+        "type": "displayfield",
+        "cls": "warning",
+        "height": 30,
+        "hideLabel": true,
+        "markup": (!prod && dev  ? "Production topology is not available. " : "") + markup + "Please upgrade your account."
+    });
+
+    if (!prod && !dev){
+      f[1].values[1].disabled = true;
+      f[1].values[2].disabled = true;
+      
     f.push({
         "type": "compositefield",
         "height" : 0,
