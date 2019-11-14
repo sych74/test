@@ -12,6 +12,7 @@ var envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     markup = "", cur = null, text = "used", prod = true, storage = true, dev = true;
 
 var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup).array;
+var group = jelastic.billing.account.GetAccount(appid, session);
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
     if (n == maxEnvs && envsCount >= q.value){
@@ -45,33 +46,41 @@ for (var i = 0; i < quotas.length; i++){
     }
 }
 var resp = {result:0};
-var url = "https://raw.githubusercontent.com/jelastic-jps/kubernetes/v1.15.5/configs/settings.yaml";
+var url = "https://raw.githubusercontent.com/sych74/test/master/quotas/settings.yaml";
 resp.settings = toNative(new org.yaml.snakeyaml.Yaml().load(new com.hivext.api.core.utils.Transport().get(url)));
+var f = resp.settings.fields;
 if (markup) {
-  var f = resp.settings.fields;
-  f.push({
-      "type": "displayfield",
-      "cls": "warning",
-      "height": 30,
-      "hideLabel": true,
-      "markup": (!prod && dev  ? "Production topology is not available. " : "") + markup + "Please upgrade your account."
-  });
-  if (!prod && !dev){
     f.push({
-        "type": "compositefield",
-        "height" : 0,
+        "type": "displayfield",
+        "cls": "warning",
+        "height": 30,
         "hideLabel": true,
-        "width": 0,
-        "items": [{
-            "height" : 0,
-            "type": "string",
-            "required": true,
-        }]
+        "markup": (!prod && dev  ? "Production topology is not available. " : "") + markup + "Please upgrade your account."
     });
-  } else {
-    if (!prod) delete f[2].values["1-prod"];
-    if (!storage) f.splice(3, 1);
-  }
+        
+    if (!prod && !dev){
+        f[2].values[1].disabled = true;
+        f[2].values[2].disabled = true;
+      
+        f.push({
+            "type": "compositefield",
+            "height" : 0,
+            "hideLabel": true,
+            "width": 0,
+            "items": [{
+                "height" : 0,
+                "type": "string",
+                "required": true,
+            }]
+        });
+        
+        
+        
+        
+    } else {
+        if (!prod) delete f[2].values["1-prod"];
+        if (!storage) f.splice(3, 1);
+    }
 }
 return resp;
 
