@@ -77,11 +77,11 @@ if (markup) {
         f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
     }      
         
-    } else {
+} else {
         if (!prod) delete f[2].values["1-prod"];
         if (!storage) f.splice(3, 1);
-    }
 }
+
 return resp;
 
 function err(e, text, cur, override){
