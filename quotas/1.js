@@ -59,6 +59,7 @@ if (!prod && !dev){
     f[4].disabled = true;
     f[5].disabled = true;
     f[6].disabled = true;
+    f[6].value = false;
     f[7].disabled = true;
     f[9].disabled = true;
     f[10].disabled = true;
