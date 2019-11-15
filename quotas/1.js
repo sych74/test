@@ -56,10 +56,10 @@ if (markup) {
         f[2].disabled = true;
         f[3].hidden = false;
         f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account."
+        f[4].disabled = true;
         f[5].disabled = true;
         f[6].disabled = true;
         f[7].disabled = true;
-        f[8].disabled = true;
         
         f.push({
             "type": "compositefield",
@@ -75,11 +75,13 @@ if (markup) {
     }
     
     if (!prod && dev){
-        f[2].values[2].disabled = true;
+        f[2].values[1].disabled = true;
         f[3].hidden = false;
         f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
     }      
-        
+
+    
+    
 } else {
         if (!prod) delete f[2].values["1-prod"];
         if (!storage) f.splice(3, 1);
