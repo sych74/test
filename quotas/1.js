@@ -52,7 +52,7 @@ var f = resp.settings.fields;
 if (markup) {
          
     if (!prod && !dev){
-        f[1].disabled = true;
+        f[0].disabled = true;
         f[2].disabled = true;
         f[3].hidden = false;
         f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account."
