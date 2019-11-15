@@ -54,7 +54,7 @@ if (!prod && !dev){
     f[0].disabled = true;
     f[2].disabled = true;
     f[3].hidden = false;
-    f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account.";
+    f[3].markup =  "Production and Development topologies are not available. " + markup + "Please upgrade your account.";
     f[3].height =  60;
     f[4].disabled = true;
     f[5].disabled = true;
