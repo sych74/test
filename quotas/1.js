@@ -75,10 +75,10 @@ if (!prod && !dev){
     });
 }
     
-if (!prod){
+if (!prod && !dev){
     f[2].values[1].disabled = true;
     f[3].hidden = false;
-    f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
+    f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account.";
 }      
 
 if (!storage) f[6].disabled = true;
