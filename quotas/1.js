@@ -55,7 +55,7 @@ if (!prod && !dev){
     f[2].disabled = true;
     f[3].hidden = false;
     f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account.";
-    f[3].height =  50;
+    f[3].height =  60;
     f[4].disabled = true;
     f[5].disabled = true;
     f[6].disabled = true;
@@ -76,13 +76,16 @@ if (!prod && !dev){
     });
 }
     
-if (!prod && !dev){
+if (!prod && dev){
     f[2].values[1].disabled = true;
     f[3].hidden = false;
     f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account.";
 }      
 
-if (!storage) f[6].disabled = true;
+if (!storage){ 
+    f[6].disabled = true;
+    f[6].value = false;
+}
 
 if (group.groupType == 'trial') {
     f[8].hidden = false;
