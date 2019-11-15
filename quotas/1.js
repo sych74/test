@@ -60,6 +60,8 @@ if (markup) {
         f[5].disabled = true;
         f[6].disabled = true;
         f[7].disabled = true;
+        f[9].disabled = true;
+        f[10].disabled = true;
         
         f.push({
             "type": "compositefield",
