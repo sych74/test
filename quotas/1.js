@@ -12,6 +12,7 @@ var envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     markup = "", cur = null, text = "used", prod = true, storage = true, dev = true;
 
 var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup).array;
+var group = jelastic.billing.account.GetAccount(appid, session);
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
     if (n == maxEnvs && envsCount >= q.value){
@@ -47,8 +48,8 @@ for (var i = 0; i < quotas.length; i++){
 var resp = {result:0};
 var url = "https://raw.githubusercontent.com/sych74/test/master/quotas/settings.yaml";
 resp.settings = toNative(new org.yaml.snakeyaml.Yaml().load(new com.hivext.api.core.utils.Transport().get(url)));
+var f = resp.settings.fields;
 if (markup) {
-    var f = resp.settings.fields;
     f.push({
         "type": "displayfield",
         "cls": "warning",
@@ -56,10 +57,13 @@ if (markup) {
         "hideLabel": true,
         "markup": (!prod && dev  ? "Production topology is not available. " : "") + markup + "Please upgrade your account."
     });
-
+        
     if (!prod && !dev){
-        f[2].values[0].disabled = true;
         f[2].values[1].disabled = true;
+        f[2].values[2].disabled = true;
+        f[3].hidden = false;
+        f[3].markup =  "Topologies are not available. " : "") + markup + "Please upgrade your account."
+        
       
         f.push({
             "type": "compositefield",
@@ -72,6 +76,14 @@ if (markup) {
                 "required": true,
             }]
         });
+    }
+    
+    if (!prod && dev){
+        f[2].values[2].disabled = true;
+        f[3].hidden = false;
+        f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
+    }      
+        
     } else {
         if (!prod) delete f[2].values["1-prod"];
         if (!storage) f.splice(3, 1);
