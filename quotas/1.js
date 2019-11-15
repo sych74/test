@@ -49,53 +49,46 @@ var resp = {result:0};
 var url = "https://raw.githubusercontent.com/sych74/test/master/quotas/settings.yaml";
 resp.settings = toNative(new org.yaml.snakeyaml.Yaml().load(new com.hivext.api.core.utils.Transport().get(url)));
 var f = resp.settings.fields;
-if (markup) {
          
-    if (!prod && !dev){
-        f[0].disabled = true;
-        f[2].disabled = true;
-        f[3].hidden = false;
-        f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account."
-        f[4].disabled = true;
-        f[5].disabled = true;
-        f[6].disabled = true;
-        f[7].disabled = true;
-        f[9].disabled = true;
-        f[10].disabled = true;
+if (!prod && !dev){
+    f[0].disabled = true;
+    f[2].disabled = true;
+    f[3].hidden = false;
+    f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account."
+    f[4].disabled = true;
+    f[5].disabled = true;
+    f[6].disabled = true;
+    f[7].disabled = true;
+    f[9].disabled = true;
+    f[10].disabled = true;
         
-        f.push({
-            "type": "compositefield",
+    f.push({
+        "type": "compositefield",
+        "height" : 0,
+        "hideLabel": true,
+        "width": 0,
+        "items": [{
             "height" : 0,
-            "hideLabel": true,
-            "width": 0,
-            "items": [{
-                "height" : 0,
-                "type": "string",
-                "required": true,
-            }]
-        });
-    }
+            "type": "string",
+            "required": true,
+        }]
+    });
+}
     
-    if (!prod){
-        f[2].values[1].disabled = true;
-        f[3].hidden = false;
-        f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
-    }      
-    
-} else {
-    if (!prod){
-        f[2].values[1].disabled = true;
-        f[3].hidden = false;
-        f[3].markup =  "Production topology is not available. Please upgrade your account."
-    } 
-    if (!storage) f[6].disabled = true;
-    if (group.groupType == 'trial') {
+if (!prod){
+    f[2].values[1].disabled = true;
+    f[3].hidden = false;
+    f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account."
+}      
+
+if (!storage) f[6].disabled = true;
+
+if (group.groupType == 'trial') {
         f[8].hidden = false;
         f[8].markup =  "Not available for " + group.groupType + " account. Please upgrade your account."
         f[9].disabled = true;
         f[10].disabled = true;
-    }    
-}
+}    
 
 return resp;
 
