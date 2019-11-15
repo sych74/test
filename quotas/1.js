@@ -52,9 +52,14 @@ var f = resp.settings.fields;
 if (markup) {
          
     if (!prod && !dev){
+        f[1].disabled = true;
         f[2].disabled = true;
         f[3].hidden = false;
         f[3].markup =  "Topologies are not available. " + markup + "Please upgrade your account."
+        f[5].disabled = true;
+        f[6].disabled = true;
+        f[7].disabled = true;
+        f[8].disabled = true;
         
         f.push({
             "type": "compositefield",
