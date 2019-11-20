@@ -56,6 +56,7 @@ if (!prod && !dev){
     f[3].disabled = false;
     f[3].markup =  "Production and Development topologies are not available. " + markup + "Please upgrade your account.";
     f[3].height =  60;
+    f[6].value = false;
         
     f.push({
         "type": "compositefield",
