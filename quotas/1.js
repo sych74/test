@@ -81,6 +81,7 @@ if (!prod && dev){
     f[2].values[1].disabled = true;
     f[3].hidden = false;
     f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account.";
+    f[3].height =  50;
 }      
 
 if (!storage){ 
