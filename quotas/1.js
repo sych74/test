@@ -82,7 +82,7 @@ if (!prod && dev){
     }
 }      
 
-if (!prodStorage){ 
+if (prod && !prodStorage){ 
     f[6].disabled = true;
     f[6].value = false;
 }
