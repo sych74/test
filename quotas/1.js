@@ -17,6 +17,7 @@ for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
     if (n == maxEnvs && envsCount >= q.value){
         err(q, "already used", envsCount, true);
+        markup = "Maximum allowed environments: " + markup;
         prod = dev = storage = false; break;
     }
 
@@ -26,17 +27,17 @@ for (var i = 0; i < quotas.length; i++){
     }
     
     if (n == perEnv && nodesPerProdEnvWOStorage > q.value){
-        err(q, "required", nodesPerProdEnvWOStorage);
+        if (!markup) err(q, "required", nodesPerProdEnvWOStorage);
         prod = false;
     }
 
     if (n == perNodeGroup && nodesPerMasterNG > q.value){
-        err(q, "required", nodesPerMasterNG);
+        if (!markup) err(q, "required", nodesPerMasterNG);
         prod = false;
     }
     
     if (n == perNodeGroup && nodesPerWorkerNG > q.value){
-        err(q, "required", nodesPerWorkerNG);
+        if (!markup) err(q, "required", nodesPerWorkerNG);
         prod = false;
     }
 }
