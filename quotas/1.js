@@ -75,10 +75,16 @@ if (!prod && dev){
     f[3].hidden = false;
     f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account.";
     f[3].height =  50;
-    if (!devStorage) f[6].disabled = true, f[6].value = false;
+    if (!devStorage){ 
+        f[6].disabled = true;
+        f[6].value = false;
+    }
 }      
 
-if (!prodStorage) f[6].disabled = true, f[6].value = false;
+if (!prodStorage){ 
+    f[6].disabled = true;
+    f[6].value = false;
+}
 
 if (group.groupType == 'trial') {
     f[8].hidden = false;
