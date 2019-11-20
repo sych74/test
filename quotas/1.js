@@ -46,18 +46,10 @@ resp.settings = toNative(new org.yaml.snakeyaml.Yaml().load(new com.hivext.api.c
 var f = resp.settings.fields;
          
 if (!prod && !dev){
-    f[0].disabled = true;
-    f[2].disabled = true;
+    for (var i = 0; i < f.length; i++) f[i].disabled = true;
     f[3].hidden = false;
     f[3].markup =  "Production and Development topologies are not available. " + markup + "Please upgrade your account.";
     f[3].height =  60;
-    f[4].disabled = true;
-    f[5].disabled = true;
-    f[6].disabled = true;
-    f[6].value = false;
-    f[7].disabled = true;
-    f[9].disabled = true;
-    f[10].disabled = true;
         
     f.push({
         "type": "compositefield",
