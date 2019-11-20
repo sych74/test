@@ -48,6 +48,7 @@ var f = resp.settings.fields;
 if (!prod && !dev){
     for (var i = 0; i < f.length; i++) f[i].disabled = true;
     f[3].hidden = false;
+    f[3].disabled = false;
     f[3].markup =  "Production and Development topologies are not available. " + markup + "Please upgrade your account.";
     f[3].height =  60;
         
