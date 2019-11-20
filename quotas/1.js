@@ -9,7 +9,7 @@ var envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     nodesPerDevEnvWOStorage = 2,
     nodesPerMasterNG = 3,
     nodesPerWorkerNG = 2,
-    markup = "", cur = null, text = "used", prod = true, storage = true, dev = true;
+    markup = "", cur = null, text = "used", prod = true, dev = true, prodStorage = true, devStorage = true;
 
 var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup).array;
 var group = jelastic.billing.account.GetAccount(appid, session);
@@ -26,14 +26,14 @@ for (var i = 0; i < quotas.length; i++){
         prod = dev = storage = false;    
     }
  
-    if (n == perEnv && nodesPerDevEnvWOStorage  == q.value) storage = false;
+    if (n == perEnv && nodesPerDevEnvWOStorage  == q.value) devStorage = false;
  
     if (n == perEnv && nodesPerProdEnvWOStorage > q.value){
         if (!markup) err(q, "required", nodesPerProdEnvWOStorage);
         prod = false;
     }
 
-    if (n == perEnv && nodesPerProdEnvWOStorage  == q.value) storage = false;
+    if (n == perEnv && nodesPerProdEnvWOStorage  == q.value) prodStorage = false;
     
     if (n == perNodeGroup && nodesPerMasterNG > q.value){
         if (!markup) err(q, "required", nodesPerMasterNG);
@@ -75,12 +75,10 @@ if (!prod && dev){
     f[3].hidden = false;
     f[3].markup =  "Production topology is not available. " + markup + "Please upgrade your account.";
     f[3].height =  50;
+    if (!devStorage) f[6].disabled = true, f[6].value = false;
 }      
 
-if (!storage){ 
-    f[6].disabled = true;
-    f[6].value = false;
-}
+if (!prodStorage) f[6].disabled = true, f[6].value = false;
 
 if (group.groupType == 'trial') {
     f[8].hidden = false;
