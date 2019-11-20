@@ -25,12 +25,16 @@ for (var i = 0; i < quotas.length; i++){
         err(q, "required", nodesPerDevEnvWOStorage, true);
         prod = dev = storage = false;    
     }
-    
+ 
+    if (n == perEnv && nodesPerDevEnvWOStorage  == q.value) storage = false;
+ 
     if (n == perEnv && nodesPerProdEnvWOStorage > q.value){
         if (!markup) err(q, "required", nodesPerProdEnvWOStorage);
         prod = false;
     }
 
+    if (n == perEnv && nodesPerProdEnvWOStorage  == q.value) storage = false;
+    
     if (n == perNodeGroup && nodesPerMasterNG > q.value){
         if (!markup) err(q, "required", nodesPerMasterNG);
         prod = false;
