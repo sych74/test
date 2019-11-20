@@ -37,7 +37,7 @@ for (var i = 0; i < quotas.length; i++){
     
     if (n == perNodeGroup && nodesPerWorkerNG > q.value){
         err(q, "required", nodesPerWorkerNG);
-        dev = false;
+        prod = false;
     }
 }
 var resp = {result:0};
