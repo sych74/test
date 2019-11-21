@@ -13,7 +13,7 @@ var envsCount = jelastic.env.control.GetEnvs({lazy: true}).infos.length,
     maxCloudlets = 6,
     markup = "", cur = null, text = "used", prod = true, dev = true, prodStorage = true, devStorage = true;
 
-var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup).array;
+var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup + ";" + maxCloudletsPerRec).array;
 var group = jelastic.billing.account.GetAccount(appid, session);
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
