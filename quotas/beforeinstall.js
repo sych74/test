@@ -56,7 +56,7 @@ if (${settings.storage:false}) {
     volumes: [
       path
     ]
-  })
+  });
 
   for (var i = 0; i < 2; i++){
     var n = resp.nodes[i];
