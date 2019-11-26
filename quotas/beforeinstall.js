@@ -52,10 +52,7 @@ if (${settings.storage:false}) {
     nodeType: "storage",
     cloudlets: 8,
     displayName: "Storage",
-    nodeGroup: "storage",
-    volumes: [
-      path
-    ]
+    nodeGroup: "storage"
   });
 
   for (var i = 0; i < 2; i++){
