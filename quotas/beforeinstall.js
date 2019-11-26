@@ -54,16 +54,5 @@ if (${settings.storage:false}) {
     displayName: "Storage",
     nodeGroup: "storage"
   });
-
-  for (var i = 0; i < 2; i++){
-    var n = resp.nodes[i];
-    n.volumes = [path];
-    n.volumeMounts = {};
-    n.volumeMounts[path] = {
-        readOnly: false,
-        sourcePath: path,
-        sourceNodeGroup: "storage"
-    };
-  }
 }
 return resp;
