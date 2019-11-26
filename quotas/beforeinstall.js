@@ -54,4 +54,4 @@ if (${settings.storage:false}) {
     nodeGroup: "storage"
   });
 }
-return ${settings.storage};
+return resp;
