@@ -46,7 +46,6 @@ if (k8smCount > 1) {
 }
 
 if (${settings.storage:false}) {
-  var path = "/data";
   resp.nodes.push({
     count: 1,
     nodeType: "storage",
