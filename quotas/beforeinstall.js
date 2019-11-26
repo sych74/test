@@ -25,7 +25,7 @@ var resp = {
     scalingMode: "stateless",
     displayName: "Workers",
     cloudlets: 32,
-    extip: ${settings.extip:false},
+    extip: "${settings.extip:false}",
     env: {
       JELASTIC_EXPOSE: false
     }
