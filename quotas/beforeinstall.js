@@ -5,44 +5,10 @@ var resp = {
   result: 0,
   ssl: !!jelastic.billing.account.GetQuotas('environment.jelasticssl.enabled').array[0].value,
   nodes: [{
-    count: k8smCount,
-    cloudlets: 32,
-    nodeType: "kubernetes",
-    tag: tag,
-    scalingMode: "stateless",
-    nodeGroup: "k8sm",
-    addons: ["conf-k8s-addon"],
-    displayName: "Master",
-    extip: false,
-    env: {
-      JELASTIC_EXPOSE: false
-    }
-  }, {
-    count: workerCount,
-    nodeGroup: "cp",
-    nodeType: "kubernetes",
-    tag: tag,
-    scalingMode: "stateless",
-    displayName: "Workers",
-    cloudlets: 32,
-    extip: ${settings.extip:false},
-    env: {
-      JELASTIC_EXPOSE: false
-    }
-  }]
-}
-
-if (k8smCount > 1) {
-  resp.nodes.push({
-    count: 2,
-    nodeType: "haproxy",
+    count: 1,
     cloudlets: 8,
-    displayName: "API Balancer",
-    nodeGroup: "mbl",
-    env: {
-      JELASTIC_PORTS: 6443
-    }
-  })
+    nodeType: "nginxphp-dockerized"
+  }]
 }
 
 if ('${settings.storage:false}') {
@@ -57,16 +23,5 @@ if ('${settings.storage:false}') {
       path
     ]
   })
-
-  for (var i = 0; i < 2; i++){
-    var n = resp.nodes[i];
-    n.volumes = [path];
-    n.volumeMounts = {};
-    n.volumeMounts[path] = {
-        readOnly: false,
-        sourcePath: path,
-        sourceNodeGroup: "storage"
-    };
-  }
 }
 return resp;
