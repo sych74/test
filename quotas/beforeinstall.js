@@ -25,7 +25,7 @@ var resp = {
     scalingMode: "stateless",
     displayName: "Workers",
     cloudlets: 32,
-    extip: "${settings.extip:false}",
+    extip: ${settings.extip:false},
     env: {
       JELASTIC_EXPOSE: false
     }
@@ -45,13 +45,28 @@ if (k8smCount > 1) {
   })
 }
 
-if (${settings.storage:false}) {
+if ('${settings.storage:false}') {
+  var path = "/data";
   resp.nodes.push({
     count: 1,
     nodeType: "storage",
     cloudlets: 8,
     displayName: "Storage",
-    nodeGroup: "storage"
-  });
+    nodeGroup: "storage",
+    volumes: [
+      path
+    ]
+  })
+
+  for (var i = 0; i < 2; i++){
+    var n = resp.nodes[i];
+    n.volumes = [path];
+    n.volumeMounts = {};
+    n.volumeMounts[path] = {
+        readOnly: false,
+        sourcePath: path,
+        sourceNodeGroup: "storage"
+    };
+  }
 }
 return resp;
