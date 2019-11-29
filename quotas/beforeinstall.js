@@ -11,7 +11,7 @@ var resp = {
   }]
 }
 
-if ('${settings.storage:false}') {
+if ('${settings.storage}' == 'true') {
   var path = "/data";
   resp.nodes.push({
     count: 1,
