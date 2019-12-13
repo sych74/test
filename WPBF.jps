@@ -1,0 +1,64 @@
+type: install
+name: test
+settings:
+
+  fields:
+  - caption: Scaling Strategy
+    type: list
+    name: loadGrowth
+    default: slow
+    required: true
+    width: 225
+    tooltip: | 
+      Configure auto-scaling triggers, i.e. how fast the system responds to load spikes by adding or removing nodes.
+      <p>Read more about <a href="https://docs.jelastic.com/automatic-horizontal-scaling">Automatic Horizontal Scaling</a></p>
+    values:        
+      - value: slow
+        caption: Low Load
+        tooltip: <h2>Low load scaling strategy</h2>add 1 new node when CPU > 70% <p>remove when CPU < 20%</p>
+      - value: medium
+        caption: Medium Load
+        tooltip: <h3>Medium load scaling strategy</h3>add 1 new node when CPU > 50% <p>remove when CPU < 20%</p>
+      - value: fast
+        caption: High Load
+        tooltip: <h3>High load scaling strategy</h3>add 2 new nodes when CPU > 30% <p>remove when CPU < 10%</p>
+
+  - caption: Advanced Features
+    type: displayfield
+    name: displayfield
+    markup:
+    
+  - type: checkbox
+    name: ls-addon
+    caption: Install LiteSpeed High-Performance Web Server
+    value: true
+    tooltip: "If this option is disabled, the cluster will be installed using NGINX load balancer and application servers"
+    showIf: 
+      true: 
+        - type: checkbox
+          name: waf
+          caption: Web Application Firewall
+          value: true
+          tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
+          
+        - caption: Brute Force Protection
+          type: list
+          name: loadGrowth
+          default: slow
+          required: true
+          width: 225
+          tooltip: | 
+            Configure auto-scaling triggers, i.e. how fast the system responds to load spikes by adding or removing nodes.
+            <p>Read more about <a href="https://docs.jelastic.com/automatic-horizontal-scaling">Automatic Horizontal Scaling</a></p>
+          values:        
+            - value: slow
+              caption: Low Load
+              tooltip: <h2>Low load scaling strategy</h2>add 1 new node when CPU > 70% <p>remove when CPU < 20%</p>
+            - value: medium
+              caption: Medium Load
+              tooltip: <h3>Medium load scaling strategy</h3>add 1 new node when CPU > 50% <p>remove when CPU < 20%</p>
+            - value: fast
+              caption: High Load
+              tooltip: <h3>High load scaling strategy</h3>add 2 new nodes when CPU > 30% <p>remove when CPU < 10%</p>
+          
+    
