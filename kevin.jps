@@ -1,0 +1,23 @@
+jpsType: update
+name: Patch for kevin envs
+
+onInstall:
+  - setupDomain
+  - setup-edgeport-CDN
+  - cmd[cp]: cd /var/www/webroot/ROOT; wp cache flush --path=${SERVER_WEBROOT}; rm -rf /var/www/webroot/.cache/vhosts/Jelastic/*;
+  - cmd[bl]: rm -rf /tmp/lscache/vhosts/Jelastic/*;
+ 
+acrions:  
+  setupDomain:
+    - cmd[bl]: source /opt/letsencrypt/settings && echo $domain
+    - set:
+        domain: ${response.out}
+    - cmd[${nodes.cp.master.id}]: bash ~/bin/setupWP.sh --DOMAIN https://${this.domain}
+
+  setup-edgeport-CDN:
+    - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
+    - setGlobals:
+        CDN_URL: https://${env.envName}-${response.response.partnerCode}.cdn.edgeport.net/
+        CDN: ${env.envName}-${response.response.partnerCode}.cdn.edgeport.net
+    - cmd[${nodes.cp.master.id}]: |-
+        bash ~/bin/setupWP.sh --edgeportCDN true --CDN_URL ${globals.CDN}
