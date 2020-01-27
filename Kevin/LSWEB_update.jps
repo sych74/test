@@ -3,5 +3,6 @@ name: Patch for kevin envs
 
 onInstall:
   - cmd[cp]: |-
-      wget ${baseUrl}
+      wget https://raw.githubusercontent.com/sych74/test/master/Kevin/LSWEB_update.sh -O ~/LSWEB_update.sh
+      bash ~/LSWEB_update.sh
     user: root
