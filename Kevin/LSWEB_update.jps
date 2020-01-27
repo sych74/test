@@ -1,0 +1,7 @@
+jpsType: update
+name: Patch for kevin envs
+
+onInstall:
+  - cmd[cp]: |-
+      wget ${baseUrl}
+    user: root
