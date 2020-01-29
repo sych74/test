@@ -16,6 +16,7 @@ onInstall:
   - forEach(nodes.cp):
     - cmd[${@i.id}]: |-
          /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/tuning/enableGzipCompress" -v "0" /var/www/conf/httpd_config.xml;
+         /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/autoFix503" -v "0" "/var/www/conf/httpd_config.xml";
          sudo jem service restart;
          wp lscache-admin set_option esi_enabled false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
          wp cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log;
