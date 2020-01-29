@@ -13,7 +13,7 @@ onInstall:
       sudo jem service restart;
 
   - log: LScache optimization
-  - cmd[${nodes.cp.master.id}] |-
+  - cmd[${nodes.cp.master.id}]: |-
       wp plugin update litespeed-cache --path=${SERVER_WEBROOT} &>> /var/log/run.log;
       wp lscache-admin set_option esi_enabled false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
   - log: LiteSpeed WEB optimization 
