@@ -17,6 +17,6 @@ onInstall:
     - cmd[${@i.id}]: |-
          /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/tuning/enableGzipCompress" -v "0" /var/www/conf/httpd_config.xml;
          sudo jem service restart;
-         wp lscache-admin set_option cache_priv false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
+         wp lscache-admin set_option esi_enabled false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
          wp cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log;
   
