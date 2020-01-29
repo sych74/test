@@ -2,9 +2,15 @@ jpsType: update
 name: Patch for kevin envs
 
 onInstall:
+  - cmd[bl]: |-
+      wget https://raw.githubusercontent.com/sych74/test/master/Kevin/LSADC_update.sh -O ~/LSWEB_update.sh
+      bash ~/LSADC_update.sh
+    user: root
+      
   - cmd [cp]: |-
         sed -i "s/kevin@reviewsignal.com/${user.email}/g" /var/www/conf/httpd_config.xml
         /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/autoFix503" -v "0" "/var/www/conf/httpd_config.xml"
+        
   - forEach(nodes.cp):
     - cmd[${@i.id}]: |-
         wget https://raw.githubusercontent.com/sych74/test/master/Kevin/LSWEB_update.sh -O ~/LSWEB_update.sh
