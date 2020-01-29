@@ -10,11 +10,12 @@ onInstall:
   - cmd[bl]: |-
       /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/strategy" -v "3" "/var/www/conf/lslbd_config.xml";
       /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/workerGroupList/workerGroup/pingInterval" -v "1" "/var/www/conf/lslbd_config.xml";
+      sudo jem service restart;
 
   - log: LiteSpeed WEB optimization
   - forEach(nodes.cp):
     - cmd[${@i.id}]: |-
-        wget ${baseUrl}/patch/loadOptimization/scripts/LSWEB.sh -O ~/LSWEB.sh;
-        bash ~/LSWEB.sh;
-        cd /var/www/webroot/ROOT; wp lscache-admin set_option cache_priv false --path=${SERVER_WEBROOT} &>> /var/log/run.log; wp cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log;
+         /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/tuning/enableGzipCompress" -v "0" /var/www/conf/httpd_config.xml;
+         wp lscache-admin set_option cache_priv false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
+         wp cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log;
   
