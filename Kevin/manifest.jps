@@ -12,12 +12,16 @@ onInstall:
       /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/workerGroupList/workerGroup/pingInterval" -v "1" "/var/www/conf/lslbd_config.xml";
       sudo jem service restart;
 
-  - log: LiteSpeed WEB optimization
+  - log: LScache optimization
+  - cmd[${nodes.cp.master.id}] |-
+      wp plugin update litespeed-cache --path=${SERVER_WEBROOT} &>> /var/log/run.log;
+      wp lscache-admin set_option esi_enabled false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
+  - log: LiteSpeed WEB optimization 
   - forEach(nodes.cp):
     - cmd[${@i.id}]: |-
          /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/tuning/enableGzipCompress" -v "0" /var/www/conf/httpd_config.xml;
          /usr/bin/xmlstarlet ed --inplace -u "httpServerConfig/autoFix503" -v "0" "/var/www/conf/httpd_config.xml";
          sudo jem service restart;
-         wp lscache-admin set_option esi_enabled false --path=${SERVER_WEBROOT} &>> /var/log/run.log; 
          wp cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log;
-  
+         wp lscache-purge all --path=${SERVER_WEBROOT} &>> /var/log/run.log;
+           
