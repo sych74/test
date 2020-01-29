@@ -10,6 +10,7 @@ onInstall:
   - cmd[bl]: |-
       /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/strategy" -v "3" "/var/www/conf/lslbd_config.xml";
       /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/workerGroupList/workerGroup/pingInterval" -v "1" "/var/www/conf/lslbd_config.xml";
+      /usr/bin/xmlstarlet ed --inplace -u "loadBalancerConfig/loadBalancerList/loadBalancer[name = "*"]/workerGroupList/workerGroup[name = "*"]/maxConns" -v "150" "/var/www/conf/lslbd_config.xml";
       sudo jem service restart;
 
   - log: LScache optimization
