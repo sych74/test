@@ -1,0 +1,32 @@
+hadarpmjfy@382952 ~/public_html $ php bin/magento config:show
+yotpo/module_info/yotpo_installation_date - 2020-03-17
+yotpo/sync_settings/orders_sync_start_date - 2020-03-17
+web/seo/use_rewrites - 1
+web/unsecure/base_url - https://magento-382952-1202567.cloudwaysapps.com/
+general/locale/code - en_US
+general/locale/timezone - America/Chicago
+general/region/display_all - 1
+general/region/state_required - AU,BR,CA,CH,EE,ES,HR,IN,LT,LV,MX,RO,US
+currency/options/base - USD
+currency/options/default - USD
+currency/options/allow - USD
+catalog/category/root_id - 2
+analytics/subscription/enabled - 1
+analytics/general/token - GhhQ_0K1tKdPAPiABiNgDE2NpJoVaeVxHNT4iPJEhpdJIEoYKa6-zz8qDYMmIbkkn6bLrAl7X9BifO0OD3M_iw
+payment/authorizenet_acceptjs/cctypes - AE,VI,MC,DI,JCB,DN
+payment/authorizenet_acceptjs/order_status - processing
+payment/authorizenet_acceptjs/payment_action - authorize
+payment/authorizenet_acceptjs/currency - USD
+connector_dynamic_content/external_dynamic_content_urls/passcode - 7wFLe2uuvUBK9E9VTifCFqxT4OA80o1A
+connector_automation/review_settings/allow_non_subscribers - 1
+connector_configuration/abandoned_carts/allow_non_subscribers - 1
+sync_settings/addressbook/allow_non_subscribers - 1
+msp_securitysuite_twofactorauth/duo/application_key - 7GNVsEUGs5dmfigv6J8Z9DwigA6pvqgIWyZN5OK5PFzjfO6uBlf4mMJjcHUHhiao
+system/full_page_cache/varnish/access_list - magento-382952-1202567.cloudwaysapps.com
+system/full_page_cache/varnish/backend_host - magento-382952-1202567.cloudwaysapps.com
+system/full_page_cache/varnish/backend_port - 80
+system/full_page_cache/caching_application - 2
+system/full_page_cache/ttl - 86400
+admin/usage/enabled - 1
+hadarpmjfy@382952 ~/public_html $ php bin/magento deploy:mode:show
+Current application mode: default. (Note: Environment variables may override this value.)
