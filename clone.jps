@@ -2,9 +2,10 @@ jpsType: update
 name: test clone
     
 onAfterClone:
-  - script: delete MANIFEST.id; return {result:0, jps:MANIFEST};
-  - install: ${response.jps}
-    envName: ${event.response.env.envName}    
+  env:
+    - script: delete MANIFEST.id; return {result:0, jps:MANIFEST};
+    - install: ${response.jps}
+      envName: ${event.response.env.envName}    
 
 onInstall:
   - log: ----- baseURL ${baseUrl}
