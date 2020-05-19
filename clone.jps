@@ -7,4 +7,4 @@ onAfterClone:
     envName: ${event.response.env.envName}    
 
 onInstall:
-  - log: ${baseUrl}
+  - log: ----- baseURL ${baseUrl}
