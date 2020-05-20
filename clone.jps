@@ -7,4 +7,4 @@ onAfterClone:
     envName: ${event.response.env.envName}    
 
 onInstall:
-  - log: ----- baseURL ${baseUrl}
+  - cmd[sqldb]: echo test
