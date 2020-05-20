@@ -1,8 +1,9 @@
 jpsType: update
 name: test clone
 
+targetNodes: none
 nodeGroupAlias:
-  "${targetNodes.nodeGroup}": sqldb
+  ${settings.nodeGroup}: sqldb
 
 onAfterClone:
   - script: delete MANIFEST.id; return {result:0, jps:MANIFEST};
