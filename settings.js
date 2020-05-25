@@ -7,7 +7,7 @@ var maxCloudlets = 32,
 var settings = jps.settings;
 var fields = {};
 
-for (var i = 0, field; field = jps.settings.main.fields[i]; i++)
+for (var i = 0, field; field = jps.settings.fields[i]; i++)
   fields[field.name] = field;
 fields["le-addon"].hidden = true;
 fields["le-addon"].value = false;
