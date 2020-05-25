@@ -1,5 +1,3 @@
-//checking quotas
-
 var settings = jps.settings;
 var fields = {};
 
