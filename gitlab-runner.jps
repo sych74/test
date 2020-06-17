@@ -10,5 +10,5 @@ onInstall:
     sed -i -e 's|"--working-directory" "/home/gitlab-runner"|"--working-directory" "/home/jelastic"|g' ${globals.GITLAB_RUNNER_UNIT};
     sed -i -e 's|"--config" "/etc/gitlab-runner/config.toml"|"--config" "/home/litespeed/.gitlab-runner/config.toml"|g' ${globals.GITLAB_RUNNER_UNIT};
     sed -i -e 's|"--user" "gitlab-runner"|"--user" "jelastic"|g' ${globals.GITLAB_RUNNER_UNIT};
-    service gitlab-runner restart;    
+    systemctl daemon-reload; service gitlab-runner restart;
    user: root
