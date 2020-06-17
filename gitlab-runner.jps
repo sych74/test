@@ -3,6 +3,26 @@ id: gitlab-runner
 name: GitLab Runner
 globals:
   GITLAB_RUNNER_UNIT: /etc/systemd/system/gitlab-runner.service
+settings:
+  fields:
+  - name: gitlab_url
+    caption: GitLab URL
+    type: string
+  - name: registration_token
+    caption: Registration token
+    type: string
+  - name: runner_name
+    caption: Runner name
+    type: string
+  - name: executor
+    caption: Executor
+    type: list
+    default: shell
+    values:
+      - value: shell
+        caption: Shell
+      - value: docker
+        caption: Docker
 onInstall:
  - cmd[${nodes.cp.master.id}]: |-
     curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash;
@@ -12,3 +32,9 @@ onInstall:
     sed -i -e 's|"--user" "gitlab-runner"|"--user" "jelastic"|g' ${globals.GITLAB_RUNNER_UNIT};
     systemctl daemon-reload; service gitlab-runner restart;
    user: root
+ - cmd[${nodes.cp.master.id}]: |
+    gitlab-runner register --non-interactive \
+    --url ${settings.gitlab_url} \
+    --registration-token ${settings.registration_token} \
+    --executor ${settings.executor} --name ${settings.runner_name} --locked=false \
+    --run-untagged=false --tag-list ${settings.runner_name}
