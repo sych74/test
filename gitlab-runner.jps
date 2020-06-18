@@ -26,7 +26,8 @@ settings:
 onInstall:
  - cmd[${nodes.cp.master.id}]: |-
     curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash;
-    yum install -y gitlab-runner;
+    yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm;
+    yum install -y gitlab-runner git;
     sed -i -e 's|"--working-directory" "/home/gitlab-runner"|"--working-directory" "/home/jelastic"|g' ${globals.GITLAB_RUNNER_UNIT};
     sed -i -e 's|"--config" "/etc/gitlab-runner/config.toml"|"--config" "/home/litespeed/.gitlab-runner/config.toml"|g' ${globals.GITLAB_RUNNER_UNIT};
     sed -i -e 's|"--user" "gitlab-runner"|"--user" "jelastic"|g' ${globals.GITLAB_RUNNER_UNIT};
