@@ -1,0 +1,14 @@
+jpsType: update
+id: vhost-conf
+name: Vhost Config
+settings:
+  fields:
+  - name: instans
+    caption: Instans
+    type: string
+  - name: domain
+    caption: Domain
+    type: string
+onInstall:
+ - cmd[${nodes.cp.master.id}]: |-
+
