@@ -18,9 +18,9 @@ onInstall:
 actions:
   vp-install:
     cmd[${nodes.cp.master.id}]: |-
-      wp plugin install https://github.com/versionpress/versionpress/releases/download/3.0.2/versionpress-3.0.2.zip --path=${SERVER_WEBROOT}
-      wp plugin activate versionpress --path=${SERVER_WEBROOT}
-      wp vp activate --yes --path=${SERVER_WEBROOT}
+      wp plugin install https://github.com/versionpress/versionpress/releases/download/3.0.2/versionpress-3.0.2.zip --path=${SERVER_WEBROOT} &>> /var/log/run.log
+      wp plugin activate versionpress --path=${SERVER_WEBROOT} &>> /var/log/run.log
+      wp vp activate --yes --path=${SERVER_WEBROOT} &>> /var/log/run.log
       
   vp-clone:
     - cmd[${nodes.cp.master.id}]: cat ${SERVER_WEBROOT}/wp-config.php | grep DB_USER | cut -d \' -f 4
@@ -30,13 +30,13 @@ actions:
     - setGlobals:
         DB_PASS: ${response.out}
     - cmd[${nodes.cp.master.id}]: |-
-        mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "create database ${settings.instans}"
-        wp vp clone --name=${settings.instans} --siteurl=https://${settings.domain} --dbname=${settings.instans} --path=${SERVER_WEBROOT}
+        mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "create database ${settings.instans}" &>> /var/log/run.log
+        cd ${SERVER_WEBROOT} && wp vp clone --name=${settings.instans} --siteurl=https://${settings.domain} --dbname=${settings.instans} --path=${SERVER_WEBROOT} &>> /var/log/run.log
       
   vp-host:
     cmd[${nodes.cp.master.id}]: |-
-      wget ${baseUrl}/scripts/vhost.sh -O /tmp/vhost.sh
-      bash /tmp/vhost.sh ${settings.instans} ${settings.domain}
+      wget ${baseUrl}/scripts/vhost.sh -O /tmp/vhost.sh &>> /var/log/run.log
+      bash /tmp/vhost.sh ${settings.instans} ${settings.domain} &>> /var/log/run.log
 
 startPage: https://${settings.domain}
 success: /text/success.md  
