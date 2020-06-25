@@ -14,7 +14,7 @@ onInstall:
  - vp-install
  - vp-clone
  - vp-host
-    
+
 actions:
   vp-install:
     cmd[${nodes.cp.master.id}]: |-
@@ -37,4 +37,6 @@ actions:
     cmd[${nodes.cp.master.id}]: |-
       wget ${baseUrl}/scripts/vhost.sh -O /tmp/vhost.sh
       bash /tmp/vhost.sh ${settings.instans} ${settings.domain}
-  
+
+startPage: https://${settings.domain}
+success: /text/success.md  
