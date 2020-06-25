@@ -24,3 +24,4 @@ ED_CMD="ed --inplace"
 /usr/bin/xmlstarlet $ED_CMD -s "httpServerConfig/listenerList/listener[name = "HTTPS"]/vhostMapList" -t elem -n "vhostMap" ${HTTPD_CONFIG} 2>&1;
 /usr/bin/xmlstarlet $ED_CMD -s "httpServerConfig/listenerList/listener[name = "HTTPS"]/vhostMapList/vhostMap[last()]" -t elem -n "vhost" -v "$VHOST_TARGET" ${HTTPD_CONFIG} 2>&1;
 /usr/bin/xmlstarlet $ED_CMD -s "httpServerConfig/listenerList/listener[name = "HTTPS"]/vhostMapList/vhostMap[last()]" -t elem -n "domain" -v "$VHOST_DOMAIN" ${HTTPD_CONFIG} 2>&1;
+sudo jem service restart;
