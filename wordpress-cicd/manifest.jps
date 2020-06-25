@@ -13,6 +13,7 @@ settings:
 onInstall:
  - vp-install
  - vp-clone
+ - vp-host
     
 actions:
   vp-install:
@@ -22,11 +23,18 @@ actions:
       wp vp activate --yes --path=${SERVER_WEBROOT}
       
   vp-clone:
-    cmd[${nodes.cp.master.id}]: |-
-      mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "create database ${settings.instans}"
-      wp vp clone --name=${settings.instans} --siteurl=https://${settings.domain} --dbname=${settings.instans} --path=${SERVER_WEBROOT}
+    - cmd[${nodes.cp.master.id}]: cat ${SERVER_WEBROOT}/wp-config.php | grep DB_USER | cut -d \' -f 4
+    - setGlobals:
+        DB_USER: ${response.out}
+    - cmd[${nodes.cp.master.id}]: cat ${SERVER_WEBROOT}/wp-config.php | grep DB_PASSWORD | cut -d \' -f 4
+    - setGlobals:
+        DB_PASS: ${response.out}
+    - cmd[${nodes.cp.master.id}]: |-
+        mysql -u${globals.DB_USER} -p${globals.DB_PASS} -e "create database ${settings.instans}"
+        wp vp clone --name=${settings.instans} --siteurl=https://${settings.domain} --dbname=${settings.instans} --path=${SERVER_WEBROOT}
       
   vp-host:
     cmd[${nodes.cp.master.id}]: |-
       wget ${baseUrl}/scripts/vhost.sh -O /tmp/vhost.sh
       bash /tmp/vhost.sh ${settings.instans} ${settings.domain}
+  
