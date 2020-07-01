@@ -18,7 +18,7 @@ onInstall:
 actions:
   vp-install:
     cmd[${nodes.cp.master.id}]: |-
-      wp plugin install https://github.com/versionpress/versionpress/releases/download/3.0.2/versionpress-3.0.2.zip --path=${SERVER_WEBROOT} &>> /var/log/run.log
+      wp plugin install https://github.com/versionpress/versionpress/releases/download/4.0-beta2/versionpress-4.0-beta2.zip --path=${SERVER_WEBROOT} &>> /var/log/run.log
       wp plugin activate versionpress --path=${SERVER_WEBROOT} &>> /var/log/run.log
       wp vp activate --yes --path=${SERVER_WEBROOT} &>> /var/log/run.log
       
