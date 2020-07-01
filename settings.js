@@ -121,11 +121,13 @@ if (!prod || group.groupType == 'trial') {
   fields["cdn-addon"].disabled = true;
   fields["cdn-addon"].value = false;
   fields["mu-addon"].disabled = true;
-  fields["displayfield"].markup = "Advanced features are not available. Please upgrade your account.";
+  fields["displayfield"].markup = "Advanced features are not available.";
   fields["displayfield"].cls = "warning";
   fields["displayfield"].hideLabel = true;
   fields["displayfield"].height = 25;
   fields["bl_count"].markup = "WordPress cluster is not available. " + markup + "Please upgrade your account.";
+  if (group.groupType == 'trial')
+    fields["bl_count"].markup = "WordPress cluster is not available. " + group.groupType + "Please upgrade your account.";
   fields["bl_count"].cls = "warning";
   fields["bl_count"].hidden = false;
   fields["bl_count"].height = 30;
