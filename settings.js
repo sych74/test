@@ -127,7 +127,7 @@ if (!prod || group.groupType == 'trial') {
   fields["displayfield"].height = 25;
   fields["bl_count"].markup = "WordPress cluster is not available. " + markup + "Please upgrade your account.";
   if (group.groupType == 'trial')
-    fields["bl_count"].markup = "WordPress cluster is not available. " + group.groupType + "Please upgrade your account.";
+    fields["bl_count"].markup = "WordPress cluster is not available for " + group.groupType + ". Please upgrade your account.";
   fields["bl_count"].cls = "warning";
   fields["bl_count"].hidden = false;
   fields["bl_count"].height = 30;
