@@ -2,8 +2,8 @@ import com.hivext.api.Response;
 import org.yaml.snakeyaml.Yaml;
 import com.hivext.api.core.utils.Transport;
 
-var cdnAppid = "c05ffa5b45628a2a0c95467ebca8a0b4test";
-var lsAppid = "9e6afcf310004ac84060f90ff41a5abatest";
+var cdnAppid = "c05ffa5b45628a2a0c95467ebca8a0b4";
+var lsAppid = "9e6afcf310004ac84060f90ff41a5aba";
 var group = jelastic.billing.account.GetAccount(appid, session);
 var isCDN = jelastic.dev.apps.GetApp(cdnAppid);
 var isLS = jelastic.dev.apps.GetApp(lsAppid);
@@ -54,8 +54,7 @@ for (var i = 0; i < quotas.length; i++){
       fields["displayfield"].markup = "Some advanced features are not available. Please upgrade your account.";
       fields["displayfield"].cls = "warning";
       fields["displayfield"].hideLabel = true;
-      fields["displayfield"].height = 25;
-      
+      fields["displayfield"].height = 25;      
     }
 
     if (n == perEnv && nodesPerEnvWO_GlusterFS  == q.value){
@@ -65,8 +64,7 @@ for (var i = 0; i < quotas.length; i++){
       fields["displayfield"].markup = "Some advanced features are not available. Please upgrade your account.";
       fields["displayfield"].cls = "warning";
       fields["displayfield"].hideLabel = true;
-      fields["displayfield"].height = 25;
-      
+      fields["displayfield"].height = 25;      
     }
 
     if (n == perEnv && q.value == 8){
@@ -78,7 +76,6 @@ for (var i = 0; i < quotas.length; i++){
       fields["displayfield"].hideLabel = true;
       fields["displayfield"].height = 25;
     }
-    
     
     if (n == perEnv && nodesPerEnvWO_Bl  == q.value){
       fields["bl_count"].value = 1;      
@@ -96,9 +93,10 @@ for (var i = 0; i < quotas.length; i++){
     }
 
     if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {  
-      fields["ls-addon"].disabled = true;
+      fields["ls-addon"].hidden = false;
     } else {
       fields["ls-addon"].hidden = true;
+      fields["ls-addon"].value = false;
     }
   
     if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
