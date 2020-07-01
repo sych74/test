@@ -94,52 +94,21 @@ for (var i = 0; i < quotas.length; i++){
       fields["displayfield"].hideLabel = true;
       fields["displayfield"].height = 25;
     }
- 
+
+    if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {  
+      fields["ls-addon"].disabled = true;
+    } else {
+      fields["ls-addon"].hidden = true;
+    }
+  
+    if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
+      fields["cdn-addon"].disabled = true;
+    } else {
+      fields["cdn-addon"].hidden = true;
+    }    
 }
 
-if (group.groupType == 'trial') {
-
-  fields["ls-addon"].value = false;
-  fields["cdn-addon"].value = false;
-  fields["le-addon"].value = false;
-  fields["glusterfs"].value = false;
-  fields["glusterfs"].disabled = true;
-  
-  if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {  
-    fields["ls-addon"].disabled = true;
-  } else {
-    fields["ls-addon"].hidden = true;
-  }
-  
-  if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
-    fields["cdn-addon"].disabled = true;
-  } else {
-    fields["cdn-addon"].hidden = true;
-  }
-    
-  fields["displayfield"].markup = "Not available for " + group.groupType + " account. Please upgrade your account.";
-  fields["displayfield"].cls = "warning";
-  fields["displayfield"].hideLabel = true;
-  fields["displayfield"].height = 25;
-    
-} else {
-  
-  if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {  
-    fields["ls-addon"].value = true;
-  } else {
-    fields["ls-addon"].hidden = true;
-    fields["ls-addon"].value = false;
-  }
-  
-  if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
-     fields["cdn-addon"].value = true;
-  } else {
-    fields["cdn-addon"].hidden = true;
-    fields["cdn-addon"].value = false;
-  }
-}
-
-if (!prod) {
+if (!prod || group.groupType == 'trial') {
   fields["ls-addon"].disabled = true;
   fields["ls-addon"].value = false;
   fields["loadGrowth"].disabled = true;
@@ -160,6 +129,8 @@ if (!prod) {
   fields["bl_count"].cls = "warning";
   fields["bl_count"].hidden = false;
   fields["bl_count"].height = 30;
+  
+  
   settings.fields.push(
     {"type": "compositefield","height": 0,"hideLabel": true,"width": 0,"items": [{"height": 0,"type": "string","required": true}]}
   );
