@@ -97,7 +97,7 @@ for (var i = 0; i < quotas.length; i++){
     } else {
       fields["ls-addon"].hidden = true;
       fields["ls-addon"].value = false;
-      fields["wp_protect"].hidden = true;
+      fields["ls-addon"].showIf["false"][0].hidden = true;
     }
   
     if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
