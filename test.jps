@@ -1,17 +1,7 @@
 type: install
 version: '1.1'
 name: Test
-
-nodes:
-  - nodeType: nginxphp-dockerized
-    cloudlets: 8
-    nodeGroup: cp
-
+globals:
+  db-cluster: ${settings.db-cluster:}
 onInstall:
-  - installJps:
-      jps: https://raw.githubusercontent.com/sych74/test/master/test1.jps
-      nodeGroup: cp
-
-  - installJps:
-      jps: https://raw.githubusercontent.com/sych74/test/master/test2.jps
-      nodeGroup: cp
+ - log: ${globals.cluster}
