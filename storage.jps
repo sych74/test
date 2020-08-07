@@ -2,31 +2,9 @@ jpsType: install
 name: Test Storage
 
 skipNodeEmails: true
-nodes:
-- nodeType: nginxphp-dockerized
-  tag: 1.16.0-php-7.3.8
-  count: 2
-  cloudlets: 8
-  nodeGroup: cp
-  volumeMounts:
-    "/var/www/webroot/ROOT":
-      readOnly: false
-      sourcePath: "/data/ROOT"
-      sourceNodeGroup: storage
-    "/var/www/webroot/cache":
-      readOnly: false
-      sourcePath: "/data/cache"
-      sourceNodeGroup: storage
-      
-      
+nodes:      
 - nodeType: storage
   count: 1
   cloudlets: 8
   nodeGroup: storage
   displayName: Storage
-
-
-onInstall:
-- cmd[${nodes.cp.master.id}]: |-
-    sleep 300
-    wget -qO- 'https://wordpress.org/latest.tar.gz' | tar xz -C /tmp && mv /tmp/wordpress/* /var/www/webroot/ROOT
