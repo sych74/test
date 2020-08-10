@@ -3,8 +3,7 @@ name: Test Storage
 
 skipNodeEmails: true
 nodes:      
-- nodeType: storage
-  count: 1
-  cloudlets: 8
-  nodeGroup: storage
-  displayName: Storage
+    nodeType: storage
+    count: 3
+    cluster: true
+    nodeGroup: storage
