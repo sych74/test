@@ -7,3 +7,4 @@ nodes:
     count: 3
     cluster: true
     nodeGroup: storage
+    cloudlets: 8
