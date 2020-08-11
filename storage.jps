@@ -4,6 +4,6 @@ name: Test Storage
 skipNodeEmails: true
 nodes:      
   - nodeType: mariadb-dockerized
-    count: 2
+    count: 3
     nodeGroup: sqldb
     cloudlets: 8
