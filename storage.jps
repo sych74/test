@@ -10,6 +10,5 @@ nodes:
     cloudlets: 8
   - nodeType: mariadb-dockerized
     count: 2
-    cluster: false
     nodeGroup: sqldb
     cloudlets: 8
