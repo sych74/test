@@ -10,7 +10,7 @@ nodes:
     nodeGroup: bl
 
   - nodeType: litespeedphp
-    count: 3
+    count: 2
     tag: 5.4.6-php-7.4.3
     flexibleCloudlets: 16
     fixedCloudlets: 1
@@ -38,5 +38,3 @@ onInstall:
           sourceAddressType: NODE_GROUP
           protocol: NFS4
           
-    - cmd[${nodes.cp.master.id}]: |-
-        wget -qO- 'https://wordpress.org/latest.tar.gz' | tar xz -C /tmp && mv /tmp/wordpress/* /var/www/webroot/ROOT/;
