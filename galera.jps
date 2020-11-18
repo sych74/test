@@ -1,7 +1,6 @@
 type: install
 version: '1.1'
-name: WordPress Cluster
-baseUrl: https://raw.githubusercontent.com/sych74/wordpress-cluster/master
+name: Test galera cluster
     
 nodes:
   - nodeType: mariadb-dockerized
