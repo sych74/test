@@ -4,7 +4,7 @@ name: Test galera cluster
     
 nodes:
   - nodeType: mariadb-dockerized
-    count: 3
+    count: ${settings.db_count}
     cloudlets: 16
     nodeGroup: sqldb
     displayName: Galera cluster
