@@ -8,7 +8,4 @@ nodes:
     cloudlets: 16
     nodeGroup: sqldb
     displayName: Galera cluster
-    nodeGroupData:
-      validation:
-        minCount: 3
-
+ 
