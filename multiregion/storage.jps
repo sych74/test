@@ -1,0 +1,393 @@
+type: install
+jpsVersion: '1.7.2'
+name: Multi-Regional WordPress Cluster
+id: wordpress-cluster-multiregions
+categories:
+  - apps/clusters
+  - apps/content-management
+description: 
+  text: Highly-available and reliable WordPress cluster setup with multi-regional distribution. 
+    The package creates interconnected WordPress instances (sub clusters) across several availability zones ensuring the highest uptime and lowest latency.
+  short: Enterprise-grade WordPress Cluster with servers in multiple regions.
+logo: https://raw.githubusercontent.com/sych74/wordpress-multiregions/master/images/82dark-back-01.svg
+baseUrl: https://raw.githubusercontent.com/sych74/wordpress-multiregions/master
+
+settings:
+  fields:
+    - caption: Regions
+      type: regionlist
+      name: regions
+      disableInactive: true
+      selectFirstAvailable: true
+      multiSelect: true
+      min: 3
+      max: 5
+      filter:
+        isActive: true
+
+    - caption: Environment
+      type: envname
+      name: envName
+      dependsOn: region
+      randomName: true
+      showFullDomain: false
+      required: true
+
+    - caption: Scaling Strategy
+      type: list
+      name: loadGrowth
+      default: slow
+      required: true
+      width: 225
+      tooltip: | 
+        Configure auto-scaling triggers, i.e. how fast the system responds to load spikes by adding or removing nodes.
+        <p>Read more about <a href="https://docs.jelastic.com/automatic-horizontal-scaling">Automatic Horizontal Scaling</a></p>
+      values:        
+          - value: slow
+            caption: Low Load
+            tooltip: <h2>Low load scaling strategy</h2>add 1 new node when CPU > 70% <p>remove when CPU < 20%</p>
+          - value: medium
+            caption: Medium Load
+            tooltip: <h3>Medium load scaling strategy</h3>add 1 new node when CPU > 50% <p>remove when CPU < 20%</p>
+          - value: fast
+            caption: High Load
+            tooltip: <h3>High load scaling strategy</h3>add 2 new nodes when CPU > 30% <p>remove when CPU < 10%</p>
+
+    - caption: Advanced Features
+      type: displayfield
+      name: displayfield
+      markup:
+ 
+    - caption: WordPress Brute Force Attack Protection
+      type: checkbox
+      name: wp_protect
+      value: true
+      disabled: false
+      tooltip: "Secure WordPress Admin Panel with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:config:wordpress-protection'>LiteSpeed Brute Force Protection</a> that limits failed login attempts. Default action is <b>Throttle</b> and number of allowed attempts is <b>100</b>"
+
+    - caption: Web Application Firewall
+      type: checkbox
+      name: waf
+      value: true
+      disabled: false
+      tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
+
+    - caption: Install Let's Encrypt SSL with Auto-Renewal
+      type: checkbox
+      name: le_addon
+      value: true
+      disabled: false
+
+    - caption: Install Lightning-Fast Premium CDN with 165+ PoPs
+      type: checkbox
+      name: cdn_addon
+      value: true
+      disabled: false
+
+    - caption: CloudFlare registration
+      type: checkbox
+      name: cf_addon
+      value: false
+      disabled: true
+      hidden: true
+      tooltip: "CloudFlare registration"
+      showIf:
+        true:
+          - caption: CloudFlare Auth Email
+            type: string
+            name: cf_auth_email
+            tooltip: ""
+
+          - caption: CloudFlare Auth Key
+            type: string
+            name: cf_auth_key
+            tooltip: ""
+
+          - caption: CloudFlare Zone ID
+            type: string
+            name: cf_zone_id
+            tooltip: ""
+
+          - caption: Domain
+            type: string
+            name: cf_domain
+            tooltip: ""
+
+        false:
+          - hideLabel: true
+            hidden: true
+            type: label
+            caption: string
+            name: customString 
+
+globals:
+  wp_cluster_url: https://raw.githubusercontent.com/sych74/wordpress-cluster/v3.0.0
+  db_cluster_url: https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/v2.4.0
+  galera_server_id: ${fn.random}
+  db_user: jelastic-${fn.random}
+  db_pass: ${fn.password(10)}
+  db_host: sqldb
+  protocol: http
+  wp_admin_pass: ${fn.password(10)}
+  ls_admin_pass: ${fn.password(10)}
+  success: default
+  email: default
+
+onInstall:
+  - initGlobals
+  - setGlobals:
+      domain: ${settings.envName}-1.${globals.domain-1}
+  - createEnvs
+          
+actions:
+
+  initGlobals:
+    - script: |
+        var regions = '${settings.regions}'.split(','),
+            envGroups = eval('(' + MANIFEST + ')').envGroups, index,
+            onAfterReturn = { setGlobals: {} }, 
+            glbs = onAfterReturn.setGlobals,
+            resp, domain;
+        resp = jelastic.env.control.GetRegions(appid, session);
+        if (resp.result != 0) return resp;
+        resp = resp.array;
+        for (var i = 0, n = regions.length; i < n; i ++) {
+          index = i + 1;
+          glbs["region-" + index] = regions[i];
+          for (var a = 0, b = resp.length; a < b; a++) {
+            for (var k = 0, l = resp[a].hardNodeGroups.length; k < l; k++) {
+              if (resp[a].hardNodeGroups[k].uniqueName == regions[i])
+                glbs["domain-" + index] = resp[a].domain;
+            }
+          }
+          if (index == 1) {
+            glbs["displayName-" + index] = "WP Cluster Master";
+            glbs["initial_env_master-" + index] = "true";
+            glbs["initial_env_slave-" + index] = "false";
+          } else {
+            glbs["displayName-" + index] = "WP Cluster Slave " + i;
+            glbs["initial_env_master-" + index] = "false";
+            glbs["initial_env_slave-" + index] = "true";
+          }
+        }
+        glbs["envGroups"] = envGroups;
+        glbs["regionsCount"] = regions.length;
+        return { result: 0, onAfterReturn: onAfterReturn };
+
+  createEnvs:
+    - script: |
+        var regions = '${settings.regions}'.split(','),
+            actions = [];
+        for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
+          actions.push({
+            jps: "https://raw.githubusercontent.com/sych74/test/master/galera.jps",
+            envName: "${settings.envName}-" + cluster,
+            loggerName: "${settings.envName}-" + cluster,
+            envGroups: "${globals.envGroups}",
+            displayName: "${globals.displayName-" + cluster + "}",
+            region: "${globals.region-" + cluster + "}",
+            settings: {
+              waf: "${settings.waf}",
+              wp_protect: "${settings.wp_protect}",
+              le_addon: "false",
+              cdn_addon: "false",
+              is_install_wp: "false",
+              is_db_cluster: "false",
+              bl_count: "1",
+              ls_admin_pass: "${globals.ls_admin_pass}",
+              glusterfs: "true",
+              galera: "${globals.initial_env_master-" + cluster + "}",
+              db_user: "${globals.db_user}",
+              db_pass: "${globals.db_pass}"
+            }  
+          });
+        }
+        return { result: 0, onAfterReturn: { install: actions } };
+
+  installEnvsManager:
+    script: |
+      var regions = '${settings.regions}'.split(','),
+          actions = [];
+      actions.push({
+          jps: "${baseUrl}/scripts/masterEnvManager.jps?_r=${fn.random}",
+          envName: "${settings.envName}-1",
+          settings: {
+              wp_cluster_path: "${globals.wp_cluster_path}",
+              master_env_name: "${settings.envName}-1",
+              galera_server_id: "${globals.galera_server_id}",
+              db_user: "${globals.db_user}",
+              db_pass: "${globals.db_pass}",
+              ls_admin_pass: "${globals.ls_admin_pass}",
+              regionsCount: "${globals.regionsCount}",
+              envName: "${settings.envName}"
+          }
+        });
+      for (var cluster = 2, n = regions.length + 1; cluster < n; cluster ++) {
+        actions.push({
+          jps: "${baseUrl}/scripts/slaveEnvManager.jps?_r=${fn.random}",
+          envName: "${settings.envName}-" + cluster,
+          settings: {
+              wp_cluster_path: "${globals.wp_cluster_path}",
+              master_env_name: "${settings.envName}-1",
+              galera_server_id: "${globals.galera_server_id}",
+              db_user: "${globals.db_user}",
+              db_pass: "${globals.db_pass}",
+              ls_admin_pass: "${globals.ls_admin_pass}",
+              regionsCount: "${globals.regionsCount}",
+              envName: "${settings.envName}",
+              master_id_glusterfs: "${globals.master_id_glusterfs-1}"
+          }
+        });
+      }
+      return { result: 0, onAfterReturn: { install: actions } };
+        
+  setCustomGlobals:
+    - script: |
+        var regions = '${settings.regions}'.split(','),
+            galera_nodes_address = "",
+            glusterfs_slaves_address = [],
+            onAfterReturn = { setGlobals: {} },
+            glbs = onAfterReturn.setGlobals;
+        for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
+          var resp = jelastic.env.control.GetEnvInfo('${settings.envName}-' + cluster, session);
+          if (resp.result != 0) return resp;
+          for (var i = 0, k = resp.nodes; i < k.length; i++) {
+           if ((k[i].nodeGroup == 'storage') && (k[i].ismaster)) {
+              glbs["master_id_glusterfs-" + cluster] = k[i].id;
+              glbs["master_ip_glusterfs-" + cluster] = k[i].address;
+              if (cluster > 1)
+                glusterfs_slaves_address.push(k[i].address);
+            }
+            if (k[i].nodeGroup == 'sqldb') {
+              galera_nodes_address += k[i].address + ",";
+              k[i].ismaster ? glbs["master_id_galera-" + cluster] = k[i].id : 0;
+            }
+            if (k[i].nodeGroup == 'bl') 
+              k[i].ismaster ? glbs["master_id_bl-" + cluster] = k[i].id : 0;
+          }
+        }
+        galera_nodes_address = galera_nodes_address.slice(0, -1);
+        glbs["galera_nodes_address"] = galera_nodes_address;
+        glbs["glusterfs_slaves_address"] = glusterfs_slaves_address;
+        return { result: 0, onAfterReturn: onAfterReturn };
+
+  setupGaleraCluster:
+    - script: |
+        var actions = [], cluster = 1;
+        actions.push({
+          jps: "${baseUrl}/scripts/geo_galera.jps?_r=${fn.random}",
+          envName: "${settings.envName}-" + cluster,
+          settings: {
+            path: "${globals.db_cluster_url}",
+            server_id: "${globals.galera_server_id}",
+            segment_id: cluster,
+            db_user: "${globals.db_user}",
+            db_pass: "${globals.db_pass}",
+            setup_galera_cluster: "true",
+            initial_galera_master: "${globals.initial_env_master-" + cluster + "}",
+            initial_galera_slave: "${globals.initial_env_slave-" + cluster + "}",
+            galera_nodes_array: "${globals.galera_nodes_address}"
+          }
+        });
+        return { result: 0, onAfterReturn: { install: actions } };
+      
+    - script: |
+        var regions = '${settings.regions}'.split(','),
+            actions = [];
+        for (var cluster = 2, n = regions.length + 1; cluster < n; cluster ++) {
+          actions.push({
+            jps: "${baseUrl}/scripts/geo_galera.jps?_r=${fn.random}",
+            envName: "${settings.envName}-" + cluster,
+            settings: {
+              path: ""${globals.db_cluster_url}"",
+              server_id: "${globals.galera_server_id}",
+              segment_id: cluster,
+              db_user: "${globals.db_user}",
+              db_pass: "${globals.db_pass}",
+              setup_galera_cluster: "true",
+              initial_galera_master: "${globals.initial_env_master-" + cluster + "}",
+              initial_galera_slave: "${globals.initial_env_slave-" + cluster + "}",
+              galera_nodes_array: "${globals.galera_nodes_address}"
+            }  
+          });
+        }
+        return { result: 0, onAfterReturn: { install: actions } };
+
+  setupGeoGlusterFS:
+    - api: env.control.ExecCmdById
+      envName: ${settings.envName}-1
+      nodeId: ${globals.master_id_glusterfs-1}
+      commandList:
+        - command: |-
+            rm -f /root/.ssh/id_rsa*;
+            echo -e "\n"|ssh-keygen -t rsa -N "";
+    - api: env.file.Read
+      path: /root/.ssh/id_rsa.pub
+      envName: ${settings.envName}-1
+      nodeId: ${globals.master_id_glusterfs-1}
+    - sshPubKey: ${response.body}
+      script: |
+        var regions = '${settings.regions}'.split(','),
+            actions = [];
+        for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
+          actions.push({
+            jps: "${baseUrl}/scripts/geo_glusterfs.jps?_r=${fn.random}",
+            envName: "${settings.envName}-" + cluster,
+            settings: {
+              setup_glusterfs_cluster: "true",
+              sshPubKey: sshPubKey,
+              initial_glusterfs_master: "${globals.initial_env_master-" + cluster + "}",
+              initial_glusterfs_slave: "${globals.initial_env_slave-" + cluster + "}"
+            }  
+          });
+        }
+        return { result: 0, onAfterReturn: { install: actions } };
+    
+    - api: env.file.Read
+      path: /var/lib/glusterd/geo-replication/common_secret.pem.pub
+      envName: ${settings.envName}-1
+      nodeId: ${globals.master_id_glusterfs-1} 
+    - commonPubKey: ${response.body}
+      script: |
+        var regions = '${settings.regions}'.split(','),
+            actions = [];
+        for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
+          actions.push({
+            jps: "${baseUrl}/scripts/geo_glusterfs.jps?_r=${fn.random}",
+            envName: "${settings.envName}-" + cluster,
+            settings: {
+              addCommonPubKey: "true",
+              commonPubKey: commonPubKey
+            }  
+          });
+        }
+        return { result: 0, onAfterReturn: { install: actions } };
+        
+    - forEach (slave:globals.glusterfs_slaves_address):
+      - install: 
+          jps: ${baseUrl}/scripts/geo_glusterfs.jps?_r=${fn.random}
+          envName: ${settings.envName}-1
+          settings: 
+            glusterfs_slaves_address: ${@slave}
+
+  install-wordpress:
+    - install: ${globals.wp_cluster_url}/scripts/installWP.jps
+      envName: ${settings.envName}-1
+      settings:
+        db_host: ${globals.db_host}
+        db_user: ${globals.db_user}
+        db_pass: ${globals.db_pass}
+        wp_admin_pass: ${globals.wp_admin_pass}
+        wp_title: "Hello World"
+        wp_url: ${globals.protocol}://${globals.domain}
+        
+  setupCacheReplication:
+    - install: ${baseUrl}/scripts/cacheReplicationLogic.jps
+      envName: ${settings.envName}-1
+    
+  
+success:
+  email: success/email/${globals.regionsCount}-region-${globals.email}.md?_r=${fn.random}
+  text: success/text/${globals.regionsCount}-region-${globals.success}.md?_r=${fn.random}
+
+startPage: ${globals.protocol}://${globals.domain}/
