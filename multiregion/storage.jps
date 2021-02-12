@@ -131,7 +131,7 @@ actions:
           envName: "${settings.envName}-" + cluster,
           settings: {
               wp_cluster_url: "${globals.wp_cluster_url}",
-              db_cluster_url: "${globals.dp_cluster_url}",
+              db_cluster_url: "${globals.db_cluster_url}",
               master_env_name: "${settings.envName}-1",
               galera_server_id: "${globals.galera_server_id}",
               db_user: "${globals.db_user}",
