@@ -33,93 +33,6 @@ settings:
       showFullDomain: false
       required: true
 
-    - caption: Scaling Strategy
-      type: list
-      name: loadGrowth
-      default: slow
-      required: true
-      width: 225
-      tooltip: | 
-        Configure auto-scaling triggers, i.e. how fast the system responds to load spikes by adding or removing nodes.
-        <p>Read more about <a href="https://docs.jelastic.com/automatic-horizontal-scaling">Automatic Horizontal Scaling</a></p>
-      values:        
-          - value: slow
-            caption: Low Load
-            tooltip: <h2>Low load scaling strategy</h2>add 1 new node when CPU > 70% <p>remove when CPU < 20%</p>
-          - value: medium
-            caption: Medium Load
-            tooltip: <h3>Medium load scaling strategy</h3>add 1 new node when CPU > 50% <p>remove when CPU < 20%</p>
-          - value: fast
-            caption: High Load
-            tooltip: <h3>High load scaling strategy</h3>add 2 new nodes when CPU > 30% <p>remove when CPU < 10%</p>
-
-    - caption: Advanced Features
-      type: displayfield
-      name: displayfield
-      markup:
- 
-    - caption: WordPress Brute Force Attack Protection
-      type: checkbox
-      name: wp_protect
-      value: true
-      disabled: false
-      tooltip: "Secure WordPress Admin Panel with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:config:wordpress-protection'>LiteSpeed Brute Force Protection</a> that limits failed login attempts. Default action is <b>Throttle</b> and number of allowed attempts is <b>100</b>"
-
-    - caption: Web Application Firewall
-      type: checkbox
-      name: waf
-      value: true
-      disabled: false
-      tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
-
-    - caption: Install Let's Encrypt SSL with Auto-Renewal
-      type: checkbox
-      name: le_addon
-      value: true
-      disabled: false
-
-    - caption: Install Lightning-Fast Premium CDN with 165+ PoPs
-      type: checkbox
-      name: cdn_addon
-      value: true
-      disabled: false
-
-    - caption: CloudFlare registration
-      type: checkbox
-      name: cf_addon
-      value: false
-      disabled: true
-      hidden: true
-      tooltip: "CloudFlare registration"
-      showIf:
-        true:
-          - caption: CloudFlare Auth Email
-            type: string
-            name: cf_auth_email
-            tooltip: ""
-
-          - caption: CloudFlare Auth Key
-            type: string
-            name: cf_auth_key
-            tooltip: ""
-
-          - caption: CloudFlare Zone ID
-            type: string
-            name: cf_zone_id
-            tooltip: ""
-
-          - caption: Domain
-            type: string
-            name: cf_domain
-            tooltip: ""
-
-        false:
-          - hideLabel: true
-            hidden: true
-            type: label
-            caption: string
-            name: customString 
-
 globals:
   wp_cluster_url: https://raw.githubusercontent.com/sych74/wordpress-cluster/v3.0.0
   db_cluster_url: https://raw.githubusercontent.com/jelastic-jps/mysql-cluster/v2.4.0
@@ -138,6 +51,13 @@ onInstall:
   - setGlobals:
       domain: ${settings.envName}-1.${globals.domain-1}
   - createEnvs
+  - installEnvsManager
+  - setCustomGlobals
+  - install:
+      jps: ${baseUrl}/scripts/geoGaleraManager.jps
+      envName: ${globals.master_env_name}
+      settings:
+        install_galera_cluster: true
           
 actions:
 
@@ -163,15 +83,14 @@ actions:
           if (index == 1) {
             glbs["displayName-" + index] = "WP Cluster Master";
             glbs["initial_env_master-" + index] = "true";
-            glbs["initial_env_slave-" + index] = "false";
           } else {
             glbs["displayName-" + index] = "WP Cluster Slave " + i;
             glbs["initial_env_master-" + index] = "false";
-            glbs["initial_env_slave-" + index] = "true";
           }
         }
         glbs["envGroups"] = envGroups;
         glbs["regionsCount"] = regions.length;
+        glbs["master_env_name"] = "${settings.envName}-1";
         return { result: 0, onAfterReturn: onAfterReturn };
 
   createEnvs:
@@ -197,8 +116,6 @@ actions:
               ls_admin_pass: "${globals.ls_admin_pass}",
               glusterfs: "true",
               galera: "${globals.initial_env_master-" + cluster + "}",
-              db_user: "${globals.db_user}",
-              db_pass: "${globals.db_pass}"
             }  
           });
         }
@@ -208,34 +125,19 @@ actions:
     script: |
       var regions = '${settings.regions}'.split(','),
           actions = [];
-      actions.push({
-          jps: "${baseUrl}/scripts/masterEnvManager.jps?_r=${fn.random}",
-          envName: "${settings.envName}-1",
-          settings: {
-              wp_cluster_path: "${globals.wp_cluster_path}",
-              master_env_name: "${settings.envName}-1",
-              galera_server_id: "${globals.galera_server_id}",
-              db_user: "${globals.db_user}",
-              db_pass: "${globals.db_pass}",
-              ls_admin_pass: "${globals.ls_admin_pass}",
-              regionsCount: "${globals.regionsCount}",
-              envName: "${settings.envName}"
-          }
-        });
-      for (var cluster = 2, n = regions.length + 1; cluster < n; cluster ++) {
+      for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
         actions.push({
-          jps: "${baseUrl}/scripts/slaveEnvManager.jps?_r=${fn.random}",
+          jps: "${baseUrl}/scripts/envManager.jps?_r=${fn.random}",
           envName: "${settings.envName}-" + cluster,
           settings: {
-              wp_cluster_path: "${globals.wp_cluster_path}",
+              wp_cluster_url: "${globals.wp_cluster_url}",
+              db_cluster_url: "${globals.dp_cluster_url}",
               master_env_name: "${settings.envName}-1",
               galera_server_id: "${globals.galera_server_id}",
               db_user: "${globals.db_user}",
               db_pass: "${globals.db_pass}",
               ls_admin_pass: "${globals.ls_admin_pass}",
-              regionsCount: "${globals.regionsCount}",
-              envName: "${settings.envName}",
-              master_id_glusterfs: "${globals.master_id_glusterfs-1}"
+              envName: "${settings.envName}"
           }
         });
       }
