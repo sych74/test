@@ -4,15 +4,8 @@ name: Test Storage
 skipNodeEmails: true
 nodes:      
   - nodeType: litespeedadc
-    extip: true
-    tag: 2.7
-    flexibleCloudlets: ${settings.st_flexibleCloudlets:8}
-    fixedCloudlets: ${settings.st_fixedCloudlets:1}
-    diskLimit: ${settings.st_diskLimit:10}
     nodeGroup: bl
-  - nodeType: litespeedphp
-    tag: 5.4.6-php-7.4.3
-    flexibleCloudlets: ${settings.st_flexibleCloudlets:8}
-    fixedCloudlets: ${settings.st_fixedCloudlets:1}
-    diskLimit: ${settings.st_diskLimit:10}
-    nodeGroup: cp
+  - nodeType: storage
+    count: 3
+    cluster: true
+    nodeGroup: storage
