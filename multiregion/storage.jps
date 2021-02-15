@@ -54,10 +54,10 @@ onInstall:
   - installEnvsManager
   - setCustomGlobals
   - install:
-      jps: ${baseUrl}/scripts/geoGaleraManager.jps
+      jps: ${baseUrl}/scripts/geoGlusterManager.jps
       envName: ${globals.master_env_name}
       settings:
-        install_galera_cluster: true
+        install_gluster_cluster: true
           
 actions:
 
