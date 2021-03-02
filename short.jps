@@ -5,7 +5,7 @@ skipNodeEmails: true
 nodes:      
   - nodeType: litespeedadc
     nodeGroup: bl
-  - nodeType: storage
-    count: 3
-    cluster: true
-    nodeGroup: storage
+  - nodeType: litespeedphp
+    nodeGroup: cp
+  - nodeType: mariadb-dockerized
+    nodeGroup: sqldb
