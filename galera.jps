@@ -7,9 +7,8 @@ nodes:
     count: 1
     cloudlets: 8
     nodeGroup: bl
-  - nodeType: mariadb-dockerized
-    count: 3
+  - nodeType: litespeedphp
+    count: 2
     cloudlets: 16
-    nodeGroup: sqldb
-    displayName: Galera cluster
+    nodeGroup: cp
  
