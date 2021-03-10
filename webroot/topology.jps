@@ -1,1 +1,14 @@
+type: install
+name: Test topology
+    
+nodes:
+  - nodeType: litespeedadc
+    count: 1
+    cloudlets: 8
+    nodeGroup: bl
+
+  - nodeType: litespeedphp
+    count: 2
+    cloudlets: 16
+    nodeGroup: cp
 
