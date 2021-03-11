@@ -1,1 +1,62 @@
+type: install
+name: Webroot test
+id: webroot-test
+baseUrl: https://raw.githubusercontent.com/sych74/wordpress-multiregions/master
 
+settings:
+  fields:
+    - caption: Regions
+      type: regionlist
+      name: region
+      disableInactive: true
+      selectFirstAvailable: true
+
+    - caption: Environment
+      type: envname
+      name: envName
+      dependsOn: region
+      randomName: true
+      showFullDomain: false
+      required: true
+
+    - caption: Install Let's Encrypt SSL with Auto-Renewal
+      type: checkbox
+      name: le_addon
+      value: true
+      disabled: false
+
+
+onInstall:
+  - script: |
+      return {result:0, envGroups:eval('(' + MANIFEST + ')').envGroups}
+
+  - install:
+      jps: https://raw.githubusercontent.com/sych74/test/master/webroot/topology.jps
+      envName: ${settings.envName}
+      region: ${settings.region}
+      loggerName: ${settings.envName}
+      displayName: Webroot test
+      envGroups: ${response.envGroups}    
+
+  - install:
+      jps: https://raw.githubusercontent.com/sych74/test/master/webroot/webroot.jps
+      envName: ${settings.envName}
+      region: ${settings.region}
+      loggerName: ${settings.envName}
+      displayName: Webroot test
+      envGroups: ${response.envGroups}    
+
+  - if ('${settings.le_addon:false}' == 'true'):
+    - script: |
+        var actions = [];
+          actions.push({
+            jps: "https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}",
+            envName: "${settings.envName}",
+            nodeGroup: "cp",
+            skipEmail: "true",
+            settings: {
+              customDomains: "${globals.domain}",
+              fallbackToX1: "true"
+            }
+          });
+        return { result: 0, onAfterReturn: { install: actions } };
