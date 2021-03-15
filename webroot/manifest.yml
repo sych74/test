@@ -57,8 +57,6 @@ onInstall:
             settings: {
               customDomains: "${globals.domain}",
               fallbackToX1: "true"
-              webroot: "true",
-              webrootPath: "/var/www/webroot/ROOT"
             }
           });
         return { result: 0, onAfterReturn: { install: actions } };
