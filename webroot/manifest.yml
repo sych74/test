@@ -50,7 +50,7 @@ onInstall:
     - script: |
         var actions = [];
           actions.push({
-            jps: "https://github.com/lazarenkoalexey/lets-encrypt/blob/JE-57585/manifest.jps?_r=${fn.random}",
+            jps: "https://github.com/jelastic-jps/lets-encrypt/blob/stage/manifest.jps?_r=${fn.random}",
             envName: "${settings.envName}",
             nodeGroup: "cp",
             skipEmail: "true",
