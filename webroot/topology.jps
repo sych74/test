@@ -1,9 +1,6 @@
 type: install
 name: Test topology
 
-onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
-  - log: webroot test
-
 nodes:
   - nodeType: litespeedadc
     count: 1
