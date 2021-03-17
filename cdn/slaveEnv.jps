@@ -8,10 +8,8 @@ onInstall:
 
 actions:
   installDummyAddons:
-    install:
-      - jps: /dummyLE.jps?_r=${fn.random}
-        nodeGroup: bl
-        
+    log: test
+  
   deleteGeoGlusterSlave:
     - api: env.control.ExecCmdById
       envName: ${globals.envName}-1
