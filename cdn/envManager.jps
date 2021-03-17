@@ -2,7 +2,7 @@ jpsType: update
 id: wordpress-multiregion-env-manager
 name: WordPress Multiregion Environment Manager Add-on
 description: WordPress Multiregion Environment Manager Add-on
-baseUrl: https://raw.githubusercontent.com/sych74/wordpress-multiregions/webroot
+baseUrl: https://raw.githubusercontent.com/sych74/test/master/cdn
 
 globals:
   wp_cluster_url: ${settings.wp_cluster_url}
