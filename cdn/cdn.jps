@@ -5,10 +5,9 @@ name: WordPress Multiregion CDN
 description: WordPress Multiregion CDN
 
 onInstall:
- - install-edgeport-CDN:
-    - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
-      nodeGroup: bl
-      skipEmail: true
-      settings:
-        note: ${settings.noteCDN:}
-        masterEnv: ${settings.masterEnv}
+  - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+    nodeGroup: bl
+    skipEmail: true
+    settings:
+      note: ${settings.noteCDN:}
+      masterEnv: ${settings.masterEnv}
