@@ -10,6 +10,8 @@ onAfterBindSSL:
   - shareCertificates
     
 onAfterInstallAddon [nodeGroup:bl, id:cdn]:
+  - getClusterEnvs
+  - installCDN
   - install: https://raw.githubusercontent.com/sych74/wordpress-cluster/v3.0.0/scripts/setupCDN.jps
  
 onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
@@ -89,3 +91,20 @@ actions:
             break;
           }
         return { result: 0, onAfterReturn: { setGlobals: globals } };
+        
+  installCDN:
+    script: |
+      var envs = '${globals.clusterEnvs}'.split(','),
+          actions = [];
+      for (var i = 0, n = envs.length; i < n; i ++) {
+        if (envs[i] != "${globals.master_env_name}"){
+          actions.push({
+            jps: "${baseUrl}/cdn.jps?_r=${fn.random}",
+            envName: envs[i],
+            settings: {
+              masterEnv: "${env.envName}"
+            }  
+          });
+        }
+      }
+      return { result: 0, onAfterReturn: { install: actions } };
