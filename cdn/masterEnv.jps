@@ -12,7 +12,6 @@ onAfterBindSSL:
 onAfterInstallAddon [nodeGroup:bl, id:cdn]:
   - getClusterEnvs
   - installCDN
-  - install: https://raw.githubusercontent.com/sych74/wordpress-cluster/v3.0.0/scripts/setupCDN.jps
  
 onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
   - importGlobalsFromNodeGroup: bl
