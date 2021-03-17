@@ -35,7 +35,7 @@ onInstall:
 
 actions:
   getClusterEnvs:
-    - script: ${baseUrl}/scripts/getClusterEnvs.js
+    - script: https://raw.githubusercontent.com/sych74/wordpress-multiregions/master/scripts/getClusterEnvs.js
       envName: ${env.envName}
     - setGlobals:
         nextIndex: ${response.nextIndex}
