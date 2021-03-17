@@ -48,12 +48,12 @@ actions:
         for (var i = 0, n = envs.length; i < n; i ++) {
           if (envs[i] == "${globals.master_env_name}"){
             actions.push({
-              jps: "${baseUrl}/scripts/masterEnv.jps?_r=${fn.random}",
+              jps: "${baseUrl}/masterEnv.jps?_r=${fn.random}",
               envName: envs[i]
             });
           } else {
             actions.push({
-              jps: "${baseUrl}/scripts/slaveEnv.jps?_r=${fn.random}",
+              jps: "${baseUrl}/slaveEnv.jps?_r=${fn.random}",
               envName: envs[i]
             });
           }
