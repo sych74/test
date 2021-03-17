@@ -8,7 +8,7 @@ onInstall:
 
 actions:
   installDummyAddons:
-    log: test
+    log: ${env.envName}
   
   deleteGeoGlusterSlave:
     - api: env.control.ExecCmdById
