@@ -2,7 +2,7 @@ jpsType: update
 id: wordpress-multiregion-master-manager-addon
 name: WordPress Multiregion Master Manager Add-on
 description: WordPress Multiregion Master Manager Add-on
-baseUrl: https://raw.githubusercontent.com/sych74/wordpress-multiregions/webroot
+baseUrl: https://raw.githubusercontent.com/sych74/test/master/cdn
 
 onAfterBindSSL:
   - importGlobalsFromNodeGroup: bl
