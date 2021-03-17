@@ -35,7 +35,7 @@ actions:
       var envs = '${globals.clusterEnvs}'.split(','),
           actions = [];
       for (var i = 0, n = envs.length; i < n; i ++) {
-        if (envs[i] != "${globals.master_env_name}"){
+        if (envs[i] != "${env.envName}"){
           actions.push({
             jps: "https://raw.githubusercontent.com/sych74/test/master/cdn/cdn.jps?_r=${fn.random}",
             envName: envs[i],
