@@ -88,6 +88,7 @@ if (!prod || group.groupType == 'trial' || regions.array.length < 2) {
   fields["displayfield"].cls = "warning";
   fields["displayfield"].hideLabel = true;
   fields["displayfield"].height = 25;
+  fields["bl_count"].markup = "Cluster is not available. " + markup + "Please upgrade your account.";
   if (isLS.result != 0 || isLS.result != Response.PERMISSION_DENIED)
     fields["bl_count"].markup = "LiteSpeed software stack templates are not supported at the moment.";
   if (group.groupType == 'trial')
