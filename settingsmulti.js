@@ -82,6 +82,8 @@ if (!prod || group.groupType == 'trial' || regions.array.length < 2) {
   fields["le_addon"].value = false;
   fields["cdn_addon"].disabled = true;
   fields["cdn_addon"].value = false;
+  fields["mu_addon"].disabled = true;
+  fields["mu_addon"].value = false;   
   fields["displayfield"].markup = "Advanced features are not available.";
   fields["displayfield"].cls = "warning";
   fields["displayfield"].hideLabel = true;
