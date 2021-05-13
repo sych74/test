@@ -47,28 +47,25 @@ for (var i = 0; i < quotas.length; i++){
     }
 
     if (n == extIP && !q.value){
-        if (!markup) err(q, "required", nodesPerGroupMin, true);
         if (!markup) err(q, "required", 1, true);
-        fields["le_addon"].disabled = false;
-        fields["le_addon"].value = true;
+        fields["le_addon"].disabled = true;
+        fields["le_addon"].value = false;
         prod = false;
     }
 
     if (n == extIPperEnv && 2 > q.value){
         if (!markup) err(q, "required", 2, true);
-        if (!markup) err(q, "required", 1, true);
-        fields["le_addon"].disabled = false;
-        fields["le_addon"].value = true;
+        fields["le_addon"].disabled = true;
+        fields["le_addon"].value = false;
         prod = false;
     }
 
     if (n == extIPperNode && 1 > q.value){
         if (!markup) err(q, "required", 1, true);
-        fields["le_addon"].disabled = false;
-        fields["le_addon"].value = true;
+        fields["le_addon"].disabled = true;
+        fields["le_addon"].value = false;
         prod = false;
     }
-
 }    
     
 if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {
@@ -90,15 +87,6 @@ if (isCDN.result == 0 || isCDN.result == Response.PERMISSION_DENIED) {
 } else {
   fields["cdn_addon"].hidden = true;
   fields["cdn_addon"].value = false;
-}
-    
-var extIP = jelastic.billing.account.GetQuotas('environment.externalip.enabled');
-var extIPperEnv = jelastic.billing.account.GetQuotas('environment.externalip.maxcount');
-var extIPperNode = jelastic.billing.account.GetQuotas('environment.externalip.maxcount.per.node');
-
-if ((extIP.result == 0 && extIP.array[0].value) && (extIPperEnv.result == 0 && extIPperEnv.array[0].value >= 2) && (extIPperNode.result == 0 && extIPperNode.array[0].value >= 1)) {
-  fields["le_addon"].disabled = false;
-  fields["le_addon"].value = true;
 }
 
 var regions = jelastic.env.control.GetRegions(appid, session);
