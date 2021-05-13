@@ -12,7 +12,10 @@ var isLS = jelastic.dev.apps.GetApp(lsAppid);
 var perEnv = "environment.maxnodescount",
       maxEnvs = "environment.maxcount",
       perNodeGroup = "environment.maxsamenodescount",
-      maxCloudletsPerRec = "environment.maxcloudletsperrec";
+      maxCloudletsPerRec = "environment.maxcloudletsperrec",
+      extIP = "environment.externalip.enabled",
+      extIPperEnv = "environment.externalip.maxcount",
+      extIPperNode = "environment.externalip.maxcount.per.node";
 var   nodesPerEnvMin = 9,
       nodesPerGroupMin = 3,
       maxCloudlets = 16,
@@ -23,7 +26,7 @@ var fields = {};
 for (var i = 0, field; field = jps.settings.fields[i]; i++)
   fields[field.name] = field;
 
-var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup + ";" + maxCloudletsPerRec ).array;
+var quotas = jelastic.billing.account.GetQuotas(perEnv + ";"+maxEnvs+";" + perNodeGroup + ";" + maxCloudletsPerRec + ";" + extIP + ";" + extIPperEnv + ";" + extIPperNode).array;
 var group = jelastic.billing.account.GetAccount(appid, session);
 for (var i = 0; i < quotas.length; i++){
     var q = quotas[i], n = toNative(q.quota.name);
@@ -42,6 +45,30 @@ for (var i = 0; i < quotas.length; i++){
         if (!markup) err(q, "required", nodesPerGroupMin, true);
         prod = false;
     }
+
+    if (n == extIP && !q.value){
+        if (!markup) err(q, "required", nodesPerGroupMin, true);
+        if (!markup) err(q, "required", 1, true);
+        fields["le_addon"].disabled = false;
+        fields["le_addon"].value = true;
+        prod = false;
+    }
+
+    if (n == extIPperEnv && 2 > q.value){
+        if (!markup) err(q, "required", 2, true);
+        if (!markup) err(q, "required", 1, true);
+        fields["le_addon"].disabled = false;
+        fields["le_addon"].value = true;
+        prod = false;
+    }
+
+    if (n == extIPperNode && 1 > q.value){
+        if (!markup) err(q, "required", 1, true);
+        fields["le_addon"].disabled = false;
+        fields["le_addon"].value = true;
+        prod = false;
+    }
+
 }    
     
 if (isLS.result == 0 || isLS.result == Response.PERMISSION_DENIED) {
