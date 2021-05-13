@@ -94,6 +94,10 @@ var regions = jelastic.env.control.GetRegions(appid, session);
 if (regions.result != 0) return regions;
 
 if (!prod || group.groupType == 'trial' || regions.array.length < 2) {
+  fields["wp_protect"].disabled = true;
+  fields["wp_protect"].value = false;
+  fields["waf"].disabled = true;
+  fields["waf"].value = false;
   fields["le_addon"].disabled = true;
   fields["le_addon"].value = false;
   fields["cdn_addon"].disabled = true;
