@@ -1,37 +1,29 @@
-jpsType: install
-name: test
-nodes:
+type: install
+name: storage test
+nodes:  
   - nodeType: litespeedadc
-    count: 1
-    flexibleCloudlets: 8
-    fixedCloudlets: 1
-    diskLimit: 10
     nodeGroup: bl
-
   - nodeType: litespeedphp
-    count: 2
-    flexibleCloudlets: 16
-    fixedCloudlets: 1
-    diskLimit: 10
     nodeGroup: cp
-
+    count: 3
   - nodeType: storage
     count: 3
     cluster: true
-    flexibleCloudlets: 8
-    fixedCloudlets: 1
-    diskLimit: 100
     nodeGroup: storage
-
 onInstall:
-    - log: Mount Storage
-    - api:
+   - log: Mount Storage
+   - api:
       - method: jelastic.environment.file.AddMountPointByGroup
         params:
-          nodeGroup: cp
-          sourceNodeId: ${nodes.storage.master.id}
-          sourcePath: /data
-          path: /var/www/webroot/ROOT
-          sourceAddressType: NODE_GROUP
-          protocol: NFS4
-          
+           nodeGroup: cp
+           sourceNodeId: ${nodes.storage.master.id}
+           sourcePath: /data
+           path: /var/www/webroot/ROOT
+           sourceAddressType: NODE_GROUP
+           protocol: NFS4
+   - cmd[storage]: mount
+   - cmd[${nodes.cp.master.id}]: |-
+        wget -qO- 'https://wordpress.org/latest.tar.gz' | tar xz -C /tmp;
+        du -sh /tmp/wordpress/;
+        mv /tmp/wordpress/* /var/www/webroot/ROOT;
+   - cmd[cp]: du -sh /var/www/webroot/ROOT;
