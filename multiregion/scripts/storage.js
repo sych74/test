@@ -54,6 +54,17 @@ resp.nodes.push({
       WP_PROTECT_LIMIT: 100,
       DEFAULT_CLUSTER: "FALSE"
     }
-})
+  }, {
+    nodeType: "litespeedphp",
+    count: ${settings.cp_count:1},
+    flexibleCloudlets: ${settings.cp_flexibleCloudlets:16},
+    fixedCloudlets: ${settings.cp_fixedCloudlets:1},
+    nodeGroup: "cp",
+    restartDelay: 10,
+    displayName: "AppServer",
+    env: {
+      SERVER_WEBROOT: "/var/www/webroot/ROOT",
+    }
+  })
 
 return resp;
