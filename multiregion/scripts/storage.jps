@@ -1,1 +1,8 @@
+type: install
+name: Storage Multiregion
+id: storage-cluster-multiregion
 
+onBeforeInstall: https://raw.githubusercontent.com/sych74/test/master/multiregion/scripts/storage.js?_r=${fn.random}
+
+skipNodeEmails: true
+nodes: definedInOnBeforeInstall
