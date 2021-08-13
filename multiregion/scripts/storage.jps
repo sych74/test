@@ -1,7 +1,3 @@
-var wpbfp = '${settings.wp_protect}' == 'true' ? "THROTTLE" : "OFF";
-var db_cluster = '${settings.galera}' == 'true' ? "galera" : "master";
-var db_count = '${settings.galera}' == 'true' ? 3 : 2;
-
 var resp = {
   result: 0,
   ssl: false,
