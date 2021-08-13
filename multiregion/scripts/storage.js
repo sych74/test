@@ -35,4 +35,22 @@ if ('${settings.glusterfs:false}' == 'true') {
     }
   })
 }
+
+resp.nodes.push({
+    nodeType: "litespeedadc",
+    extip: true,
+    count: ${settings.bl_count:1},
+    flexibleCloudlets: ${settings.bl_flexibleCloudlets:8},
+    fixedCloudlets: ${settings.bl_fixedCloudlets:1},
+    nodeGroup: "bl",
+    restartDelay: 10,
+    scalingMode: "STATEFUL",
+    displayName: "Load balancer",
+    env: {
+      WP_PROTECT: wpbfp,
+      WP_PROTECT_LIMIT: 100,
+      DEFAULT_CLUSTER: "FALSE"
+    }
+})
+
 return resp;
