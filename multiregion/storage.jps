@@ -99,7 +99,7 @@ actions:
             actions = [];
         for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
           actions.push({
-            jps: "https://raw.githubusercontent.com/sych74/test/master/storage.jps",
+            jps: "https://raw.githubusercontent.com/sych74/test/master/multiregion/scripts/storage.jps",
             envName: "${settings.envName}-" + cluster,
             loggerName: "${settings.envName}-" + cluster,
             envGroups: "${globals.envGroups}",
