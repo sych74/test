@@ -4,4 +4,4 @@ baseUrl: https://raw.githubusercontent.com/sych74/test/master/email
 globals:
   success_email: ${settings.success_email:'/success/email.md'}
 success:
-  email: ${settings.success_email}
+  email: ${globals.success_email}
