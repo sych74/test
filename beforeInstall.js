@@ -2,7 +2,6 @@ var resp = {
   result: 0,
   nodes: []
 }
-
 resp.nodes.push({
   nodeType: "opensearch",
   count: 1,
@@ -10,14 +9,12 @@ resp.nodes.push({
   fixedCloudlets: ${settings.st_fixedCloudlets:1},
   nodeGroup: "nosqldb",
   displayName: "OpenSearch",
+  validation: {
+    maxCount: 1
+  },
   cluster: {
     is_opensearchdashboards: false,
     success_email: false,
-    validation: {
-      nodeGroupData: {
-        maxCount: 1
-      }
-    }
   }
 })
 
