@@ -3,7 +3,7 @@ name: Backups
 description: Backups
 
 onInstall:
-  - importGlobalsFromNodeGroup
+  - importGlobalsFromNodeGroup: storage
   - log: ---- ${globals.ftp_user}  ----   ${globals.ftp_pass}
   
 actions:  
