@@ -1,0 +1,18 @@
+type: install
+name: Shared Storage for Backups
+description: Shared Storage for Backups
+
+nodes:
+- nodeType: storage
+  nodeGroup: storage
+
+globals:
+  is_buckups: true
+  ftp_user: jelastic-${fn.random}
+  ftp_pass: ${fn.password(10)}
+
+onInstall:
+  - log: ---- install ftp server with creadentional ${globals.ftp_user} ------ 
+  - env.control.ApplyNodeGroupData [storage]:
+      data: 
+        globals: "${globals.toJSON()}"
