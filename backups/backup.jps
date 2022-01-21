@@ -1,0 +1,21 @@
+type: update
+name: Backups
+description: Backups
+
+onInstall:
+  - importGlobalsFromNodeGroup
+  - log: ---- ${globals.ftp_user}  ----   ${globals.ftp_pass}
+  
+actions:  
+  importGlobalsFromNodeGroup:
+    - script: |
+        var resp = api.env.control.GetNodeGroups("${env.name}", session);
+        if (resp.result != 0) return resp;
+        var groups = resp.object, globals;
+        for (var i = 0, n = groups.length; i < n; i++)
+          if (groups[i].name == "${this}" && groups[i].globals) {
+            globals = new org.yaml.snakeyaml.Yaml().load(groups[i].globals);
+            break;
+          }
+        return { result: 0, onAfterReturn: { setGlobals: globals } };
+
