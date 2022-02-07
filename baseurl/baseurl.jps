@@ -1,5 +1,5 @@
 type: update
 name: test
 onInstall:
-  - log:  ----- ${settings.baseUrl}
-  - log:  ----- ${settings.baseURL}
+  - log:  baseUrl ----- ${settings.baseUrl}
+  - log:  baseURL ----- ${settings.baseURL}
