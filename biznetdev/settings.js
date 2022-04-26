@@ -3,7 +3,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.hivext.api.core.utils.Transport;
 
 var lsAppid = "9e6afcf310004ac84060f90ff41a5aba";
-var baseUrl = "https://raw.githubusercontent.com/doug-forester/bitrix24-jps/master";
+var baseUrl = "https://raw.githubusercontent.com/sych74/test/master/biznetdev";
 var lsText = "Install LiteSpeed High-Performance Web Server";
 var group = jelastic.billing.account.GetAccount(appid, session);
 
