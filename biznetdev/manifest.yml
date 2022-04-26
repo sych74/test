@@ -1,0 +1,125 @@
+jpsType: install
+jpsVersion: '1.5.2'
+id: bitrix24
+name: Bitrix24 Standalone
+logo: images/bitrix24-logo.svg
+homepage: http://www.buildingbridge.com/
+description: Bitrix24 is a collaborative business software and platform trusted by many companies world wide!
+categories:
+    - apps/e-commerce
+    - apps/sales-and-marketing
+baseUrl: https://bitbucket.org/biznetdev/bitrix-dev-jsp/raw/
+
+mixins:
+  - a5126be3f51ed6423e0df87ccd0542bf872b2eb9/configs/settings.yaml
+  - a5126be3f51ed6423e0df87ccd0542bf872b2eb9/configs/deps.yaml
+
+onBeforeInit: https://raw.githubusercontent.com/sych74/test/master/biznetdev/settings.js?_r=${fn.random}
+
+settings:
+  fields:
+  - name: bitrix_settings
+    caption: Bitrix Settings
+    type: list
+    values:
+      https://gcr.io/cloud-management-265600/biznet-bitrix:latest: Bitrix24
+      https://gcr.io/cloud-management-265600/biznet-bitrix: Bitrix HOLD
+    default:  https://gcr.io/cloud-management-265600/biznet-bitrix:latest
+
+  - caption: Regions
+    type: regionlist
+    name: regions
+    disableInactive: true
+    selectFirstAvailable: true
+    multiSelect: false
+
+  - caption: Environment
+    type: envname
+    name: envName
+    randomName: true
+    showFullDomain: true
+    required: true
+    dependsOn: regions
+
+  - caption: Bitrix License 
+    type: string
+    name: license
+    default: 0000-1111-2222-3333  
+
+globals:
+  IS_JELASTIC_SSL: false
+  PROTOCOL: http
+  ADMIN_PASS: ${fn.password(10)}
+  WEBHOME: /home/bitrix/
+  WEBROOT: /home/bitrix/www/
+  APPTMP: /tmp/bitrix
+  DB_NAME: sitemanager
+  DB_USER: bitrix
+  DB_PASS: ${fn.password(10)}
+
+nodes:
+  - cloudlets: 8
+    nodeType: apache2
+    engine: php7.4
+  - nodeType: mysql5
+    cloudlets: 8
+
+onInstall:
+  - downloadArchive
+  - deployApp
+  - createDb
+
+actions:
+  downloadArchive:
+    cmd [cp]: |-
+      curl -fsSL "https://bitbucket.org/biznetdev/bitrix-dev-jsp/get/676977bccd1c.zip" -o ${globals.APPTMP}.zip
+      unzip -o ${globals.appTmpPath}.zip -d ${globals.appTmpPath}
+      cd ${globals.WEBHOME}
+      mv ${globals.appTmpPath}www ${globals.WEBHOME}
+      rm -rf ${globals.appTmpPath}docs
+      rm -rf ${globals.appTmpPath}Docker
+      rm -rf ${globals.appTmpPath}docker-compose.yaml
+      rm -rf ${globals.appTmpPath}README.md
+      mv ${globals.appTmpPath}/etc/* /etc/
+      mv ${globals.appTmpPath}/opt/* /opt/
+      mv ${globals.appTmpPath}/root/* /root/
+      mv ${globals.appTmpPath}/usr/* /usr/
+      mv ${globals.appTmpPath}/var/* /var/
+
+  deployApp:
+  - addContext:
+      fileName: ${globals.appTmpPath}.zip
+      name: ROOT
+      type: ARCHIVE
+  - replaceInFile:
+      nodeType: apache2
+      path: "/etc/php.ini"
+      replacements:
+      - pattern: ";extension=gd.so"
+        replacement: extension=gd.so
+      - pattern: ";extension=intl.so"
+        replacement: extension=intl.so
+  - restartNode [cp]
+
+  createDb:
+    prepareSqlDatabase:
+      nodeGroup: sqldb
+      loginCredentials:
+        user: root
+        password: "${nodes.sqldb.password}"
+      newDatabaseName: sitemanager
+      newDatabaseUser:
+        name: "${globals.DB_USER}"
+        password: "${globals.DB_PASS}"
+
+success: |
+  Below you will find your URL, username and password.
+  
+  URL: [${env.protocol}://${env.domain}/
+  
+  MySQL Info:
+  root
+  Password: ${nodes.sqldb.password}
+
+  DB User: "${globals.DB_USER}"
+  Password: "${globals.DB_PASS}"
