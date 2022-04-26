@@ -6,9 +6,7 @@ var lsAppid = "9e6afcf310004ac84060f90ff41a5aba";
 var baseUrl = "https://raw.githubusercontent.com/sych74/test/master/biznetdev";
 var lsText = "Install LiteSpeed High-Performance Web Server";
 var group = jelastic.billing.account.GetAccount(appid, session);
-
-var url = baseUrl + "/settings.yaml";
-var settings = toNative(new Yaml().load(new Transport().get(url)));
+var settings = jps.settings;
 var fields = settings.fields;
 if (group.groupType == 'trial') {
     fields.push({
