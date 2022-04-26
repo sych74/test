@@ -1,0 +1,29 @@
+settings:
+  fields:
+  - name: bitrix_settings
+    caption: Bitrix Settings
+    type: list
+    values:
+      https://gcr.io/cloud-management-265600/biznet-bitrix:latest: Bitrix24
+      https://gcr.io/cloud-management-265600/biznet-bitrix: Bitrix HOLD
+    default:  https://gcr.io/cloud-management-265600/biznet-bitrix:latest
+
+  - caption: Regions
+    type: regionlist
+    name: regions
+    disableInactive: true
+    selectFirstAvailable: true
+    multiSelect: false
+
+  - caption: Environment
+    type: envname
+    name: envName
+    randomName: true
+    showFullDomain: true
+    required: true
+    dependsOn: regions
+
+  - caption: Bitrix License 
+    type: string
+    name: license
+    default: 0000-1111-2222-3333  
