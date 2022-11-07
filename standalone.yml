@@ -2,7 +2,6 @@ type: install
 id: wp-edition-standalone
 categories:
   - wordpress
-targetEditions: wordpress
 name: Standalone
 baseUrl: https://raw.githubusercontent.com/jelastic-jps/wordpress-edition/master
 logo: /images/logo/standalone.svg
