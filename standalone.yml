@@ -11,8 +11,6 @@ description:
   text: /text/standalone.md    
   short: Single instance powered by NGINX Web Server 
 
-onBeforeInit: /scripts/onBeforeInit.js
-
 settings:
   fields:  
   - caption: Advanced Features
@@ -70,51 +68,3 @@ settings:
     name: ownerUid
     caption: Owner
 
-globals:
-  wp_jps: https://raw.githubusercontent.com/jelastic-jps/wordpress/v2.2.0
-  wp_admin_pass: ${fn.password(10)}
-  db_user: user-${fn.random}
-  db_pass: ${fn.password(10)}
-  PROTOCOL: http
-
-onInstall:
-
-  - install:
-      jps: ${globals.wp_jps}/manifest.yml?_r=${fn.random}
-      envName: ${settings.envName}
-      region: ${settings.region}
-      loggerName: ${settings.envName}
-      displayName: ${settings.displayName}
-      envGroups: ${globals.envGroups}
-      ownerUid: ${settings.ownerUid}
-      settings:
-        ls-addon: false
-        waf: false
-        wp_protect: false
-        le-addon: ${settings.le-addon:true}
-        cdn-addon: ${settings.cdn-addon:false}
-        mu-addon: false
-        woocommerce: false
-        DB_USER: ${globals.db_user}
-        DB_PASS: ${globals.db_pass}
-        WP_ADMIN_PASS: ${globals.wp_admin_pass}
-        success_email: false
-        project: ${settings.project:default}
-        projectScope: ${settings.projectScope:production}
-        
-  - env.control.ApplyNodeGroupData[cp]:
-      envName: ${settings.envName}
-      data:
-        fixedTopologyLayers: 1
-        
-  - setProtocol
-  
-actions:
-  setProtocol:
-    if (${quota.environment.jelasticssl.enabled} || "${settings.le-addon:false}"):
-      setGlobals:
-        PROTOCOL: https
-
-success:
-  email: /success/email/standalone.md?_r=${fn.random}
-  text: /success/text/standalone.md?_r=${fn.random}
