@@ -53,16 +53,3 @@ settings:
     name: displayName
     caption: Display Name
     default: Standalone
-
-  - caption: Region
-    type: regionlist
-    name: region
-    disableInactive: true
-    selectFirstAvailable: true
-    stateId: "wp"
-    dependsOn: ownerUid
-   
-  - type: owner
-    name: ownerUid
-    caption: Owner
-
