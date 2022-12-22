@@ -1,6 +1,5 @@
 type: install
 name: Test
-
 nodes:
 - nodeType: nginxphp
   nodeGroup: cp
