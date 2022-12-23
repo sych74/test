@@ -1,5 +1,4 @@
 type: install
 name: Test
-
-onInstall:
-  log: -------${settings.envName}
+nodes:
+- nodeType: ngnxphp
