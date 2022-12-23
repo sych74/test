@@ -1,5 +1,6 @@
 type: install
 name: Test
-nodes:
-- nodeType: nginxphp
-  nodeGroup: cp
+globals:
+  env_name: wp-${fn.random}
+onInstall:
+  log: -------${globals.env_name}
