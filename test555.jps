@@ -1,4 +1,4 @@
 type: install
 name: Test
 nodes:
-- nodeType: ngnxphp
+- nodeType: nginxphp
