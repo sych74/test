@@ -2,6 +2,9 @@ type: install
 name: Cluster plan migration test
 id: cluster-plan-migration-top-test
 
+mixins:
+  - https://raw.githubusercontent.com/sych74/wordpress/JE-65509/scripts/common.yml
+
 settings:
   fields:
     - type: displayfield
