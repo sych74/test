@@ -1,0 +1,40 @@
+type: install
+name: Cluster plan migration test
+id: cluster-plan-migration-test
+
+settings:
+  fields:
+    - type: displayfield
+      hideLabel: true
+      hidden: true
+      name: lb.nodes
+      value: 1
+
+    - type: displayfield
+      hideLabel: true
+      hidden: true
+      name: lb.cloudlets
+      value: 8
+
+    - type: displayfield
+      hideLabel: true
+      hidden: true
+      name: cp.nodes
+      value: 2
+
+    - type: displayfield
+      hideLabel: true
+      hidden: true
+      name: cp.cloudlets
+      value: 16
+
+nodes:
+- nodeType: nginx
+  cloudlets: ${settings.lb.cloudlets:16}
+  count: ${settings.lb.nodes:2}
+  disklimit: ${settings.lb.diskspace:20}
+ 
+- nodeType: nginxphp
+  cloudlets: ${settings.cp.cloudlets:16}
+  count: ${settings.cp.nodes:2}
+  disklimit: ${settings.cp.diskspace:50}
