@@ -1,6 +1,6 @@
 type: install
 name: Cluster plan migration test
-id: cluster-plan-migration-test
+id: cluster-plan-migration-top-test
 
 settings:
   fields:
