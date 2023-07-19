@@ -1,0 +1,121 @@
+type: install
+jpsVersion: 7.1.1
+id: wp-edition-cluster-test
+categories:
+  - wordpress
+targetEditions: wordpress  
+name: WP edition cluster test
+baseUrl: https://github.com/jelastic-jps/wordpress-edition/blob/JE-65509
+logo: /images/logo/woocommerce-pro.svg
+description:
+  text: /text/woocommerce-pro.md    
+  short: Single instance WooCommerce powered by LiteSpeed
+
+onBeforeInit: /scripts/onBeforeInit.js
+
+settings:
+  fields:
+  - caption: Advanced Features
+    type: displayfield
+    name: displayfield
+    markup:
+
+  - caption: WordPress Brute Force Attack Protection
+    type: checkbox
+    name: wp_protect
+    value: true
+    disabled: false
+    tooltip: "Secure WordPress Admin Panel with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:config:wordpress-protection' target='_blank'>LiteSpeed Brute Force Protection</a> that limits failed login attempts. Default action is <b>Throttle</b> and number of allowed attempts is <b>100</b>"
+
+  - caption: Web Application Firewall
+    type: checkbox
+    name: waf
+    value: true
+    disabled: false
+    tooltip: "Protect web sites with <a href='https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:waf' target='_blank'>LiteSpeed built-in WAF</a> based on Free ModSecurity Rules from Comodo"
+
+  - caption: Install Let's Encrypt SSL with Auto-Renewal
+    type: checkbox
+    name: le-addon
+    value: true
+    disabled: false
+    tooltip: "Advanced integration with Let's Encrypt certificate authority that simplifies and automates the process of issuing, configuring and updating trusted custom SSL certificates."
+
+  - caption: Install Lightning-Fast Premium CDN
+    type: checkbox
+    name: cdn-addon
+    value: true
+    disabled: false
+    tooltip: "Jelastic CDN is an HTTP/3 premium content delivery network of 160+ Super PoPs (points of presence) with bandwidth capacity up to 115 Tbps, advanced caching and acceleration strategies based on best-in-class IP Anycast technology."
+
+  - type: displayfield
+    hideLabel: true
+    hidden: true
+    name: bl_count   
+    markup:
+    
+  - type: separator
+
+  - caption: Topology
+    type: displayfield
+    name: topology
+    tooltip: "<h2 align=center>Single instance WooCommerce<br>powered by LiteSpeed<br>Web Server</h2><br><img width='214' height='340' src='https://raw.githubusercontent.com/jelastic-jps/wordpress-edition/master/images/topo/standalone-pro.svg?sanitize=true'><br>"
+
+  - type: envname
+    name: envName
+    caption: Environment
+    dependsOn: region
+    required: true
+
+  - type: string
+    name: displayName
+    caption: Display Name
+    default: WooCommerce Pro
+
+  - caption: Region
+    type: regionlist
+    name: region
+    disableInactive: true
+    selectFirstAvailable: true
+    stateId: "wp"
+    dependsOn: ownerUid
+   
+  - type: owner
+    name: ownerUid
+    caption: Owner
+
+mixins:
+  - https://raw.githubusercontent.com/sych74/wordpress/JE-65509/scripts/common.yml
+
+onInstall:
+  - script: /scripts/setGlobals.js?_r=${fn.random}
+
+  - install:
+      jps: https://raw.githubusercontent.com/sych74/test/master/serviceTest.jps?_r=${fn.random}
+      envName: ${settings.envName}
+      region: ${settings.region}
+      loggerName: ${settings.envName}
+      displayName: ${settings.displayName}
+      envGroups: ${globals.envGroups}
+      ownerUid: ${settings.ownerUid}
+      settings:
+        lb.nodes: ${settings.lb.nodes:1}
+        lb.cloudlets: ${settings.lb.cloudlets:8}
+        lb.diskspace: ${settings.lb.diskspace:[quota.disk.limitation]}
+        cp.nodes: ${settings.cp.nodes:2}
+        cp.cloudlets: ${settings.cp.cloudlets:16}
+        cp.diskspace: ${settings.cp.diskspace:[quota.disk.limitation]}
+
+  - setGlobals:
+      installationId: ${response.uniqueName}
+        
+onApplySubscriptionSettings:
+  marketplace.installation.ExecuteAction:
+    appUniqueName: ${globals.installationId}
+    action: applyEnvSettings
+    settings:
+      targetAppid: ${event.params.targetAppid}
+      lb.cloudlets: ${event.params.settings.lb.cloudlets}
+      lb.diskspace: ${event.params.settings.lb.diskspace}000
+      cp.cloudlets: ${event.params.settings.cp.cloudlets}
+      cp.diskspace: ${event.params.settings.cp.diskspace}000
