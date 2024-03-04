@@ -1,10 +1,16 @@
-type: update
-version: '0.99'
-name: Test 1
+jpsType: install
+name: Test
+nodes:
+  - nodeType: nginxphp
+    nodeGroup: cp
 
-nodeGroupAlias:
-  "${targetNodes.nodeGroup}": cp
+onAfterClone:
+  - script: delete MANIFEST.id; return {result:0, jps:MANIFEST};
+  - setGlobals:
+      jps: ${response.jps}
+  - install: ${globals.jps}
+    envName: ${event.response.env.envName}
+    nodeGroup: cp
 
-onAfterScaleOut[cp]:
-  forEach(event.response.nodes):
-    log: test1 - ${@i.id}
+onInstall:
+  log: test
